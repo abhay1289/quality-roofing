@@ -618,7 +618,7 @@ p, li { text-wrap: pretty; }
 /* ============================================================
    FOOTER
    ============================================================ */
-.footer{position:fixed;bottom:0;left:0;width:100%;z-index:-1;background:var(--ink);color:var(--cream);padding:88px 0 34px;border-top:1px solid var(--line);}
+.footer{position:relative;z-index:10;background:var(--ink);color:var(--cream);padding:88px 0 34px;border-top:1px solid var(--line);}
 .footer__top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:44px;padding-bottom:52px;border-bottom:1px solid var(--line-soft);}
 @media(max-width:900px){.footer__top{grid-template-columns:1fr 1fr;gap:36px;}}
 @media(max-width:520px){.footer__top{grid-template-columns:1fr;}}
@@ -2284,17 +2284,9 @@ section[id]{scroll-margin-top:88px;}
     updateBuilder();
   }));
 
-  // ===== Reveal Footer Logic =====
-  const footerEl = document.querySelector('.footer');
+  // ===== Footer Logic =====
   const ctaSection = document.getElementById('cta');
-  function updateFooter() {
-    if (footerEl && ctaSection) {
-      ctaSection.style.marginBottom = footerEl.offsetHeight + 'px';
-    }
-  }
-  window.addEventListener('resize', updateFooter);
-  requestAnimationFrame(updateFooter);
-  setTimeout(updateFooter, 250);
+  if (ctaSection) ctaSection.style.marginBottom = '0px';
 
 
   // ===== Testimonials Carousel JS =====
