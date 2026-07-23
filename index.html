@@ -331,10 +331,10 @@ p, li { text-wrap: pretty; }
 .nav__cta{justify-self:end;display:inline-flex;align-items:stretch;overflow:hidden;
   text-decoration:none;z-index:210;transition:transform .3s var(--ease),box-shadow .3s var(--ease);}
 .nav__cta:hover{transform:translateY(-2px);box-shadow:0 14px 32px -10px rgba(245,166,35,.5);}
-.nav__cta-label{display:flex;align-items:center;padding:12px 20px;background:var(--gold-2);
-  font-family:var(--font-display);font-weight:600;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;color:#0A0818;white-space:nowrap;}
-.nav__cta-icon{display:flex;align-items:center;justify-content:center;width:48px;background:#0A0818;}
-.nav__cta-icon svg{width:20px;height:20px;transform:rotate(-45deg);}
+.nav__cta-label{display:flex;align-items:center;padding:9px 14px;background:var(--gold-2);
+  font-family:var(--font-display);font-weight:700;font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:#0A0818;white-space:nowrap;}
+.nav__cta-icon{display:flex;align-items:center;justify-content:center;width:38px;background:#0A0818;}
+.nav__cta-icon svg{width:16px;height:16px;transform:rotate(-45deg);}
 
 /* ============================================================
    FULLSCREEN MENU OVERLAY
@@ -392,13 +392,15 @@ p, li { text-wrap: pretty; }
 .hero-progress-dot.is-active{background:var(--gold);width:52px;box-shadow:0 0 16px rgba(245,166,35,.6);}
 @media(max-width:768px){.hero-heading{white-space:normal;font-size:clamp(1.8rem, 7.5vw, 3rem);}}
 @media(max-width:600px){
-  .nav { padding: 10px 14px !important; }
-  .nav__toggle { width: 44px; height: 44px; }
-  .nav__toggle svg { width: 22px; height: 22px; }
-  .nav__logo-img { height: 32px !important; }
-  .nav__cta-label { padding: 8px 12px !important; font-size: 0.72rem !important; letter-spacing: 0.05em !important; }
-  .nav__cta-icon { width: 36px !important; }
-  .nav__cta-icon svg { width: 14px !important; height: 14px !important; }
+  .nav { display: flex !important; justify-content: space-between !important; align-items: center !important; gap: 8px !important; padding: 10px 12px !important; }
+  .nav__toggle { width: 40px; height: 40px; flex-shrink: 0; }
+  .nav__toggle svg { width: 20px; height: 20px; }
+  .nav__logo { justify-self: auto; flex-shrink: 1; }
+  .nav__logo-img { height: 26px !important; max-width: 100px; object-fit: contain; }
+  .nav__cta { flex-shrink: 0; }
+  .nav__cta-label { padding: 6px 10px !important; font-size: 0.65rem !important; letter-spacing: 0.04em !important; }
+  .nav__cta-icon { width: 28px !important; }
+  .nav__cta-icon svg { width: 12px !important; height: 12px !important; }
 }
 
 /* ============================================================
