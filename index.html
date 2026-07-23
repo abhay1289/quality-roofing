@@ -2016,13 +2016,14 @@ section[id]{scroll-margin-top:88px;}
 
   // ===== Hero scroll-scrub + rotating headings (smooth lerp) =====
   function setupScrub(){
+    const isMobile = ('ontouchstart' in window) || matchMedia('(max-width:768px)').matches;
     const heads = document.querySelectorAll('.hero-heading');
     const dots = document.querySelectorAll('.hero-progress-dot');
     
     video.muted = true;
     video.playsInline = true;
     
-    // Unlock WebKit media decoder for iOS Safari frame-by-frame seeking
+    // Unlock WebKit media decoder for iOS Safari seeking
     const unlockWebkit = () => {
       video.play().then(() => video.pause()).catch(() => {});
     };
@@ -2031,15 +2032,13 @@ section[id]{scroll-margin-top:88px;}
     window.addEventListener('scroll', unlockWebkit, { once: true });
 
     const hero = document.getElementById('hero');
-    const overlay = hero.querySelector('.hero-overlay');
     let last = -1;
     let targetProgress = 0;
-    let currentProgress = 0;   // smoothed value that lerps toward target
+    let currentProgress = 0;
     let rafRunning = false;
+    let lastSetTime = 0;
 
-    // Lerp factor: lower = smoother / more lag, higher = snappier
-    const LERP = 0.15;
-    // Threshold to stop the rAF loop when close enough
+    const LERP = isMobile ? 0.22 : 0.15;
     const EPSILON = 0.0001;
 
     function updateScroll(){
@@ -2049,18 +2048,24 @@ section[id]{scroll-margin-top:88px;}
     }
 
     function tick(){
-      // Lerp toward target
       currentProgress += (targetProgress - currentProgress) * LERP;
 
-      // Snap when very close to avoid endless micro-updates
       if (Math.abs(targetProgress - currentProgress) < EPSILON) {
         currentProgress = targetProgress;
       }
 
-      // Set video time frame-by-frame on scroll across ALL devices (mobile & desktop)
       if (!isNaN(video.duration) && video.duration > 0) {
         const t = Math.min(currentProgress * video.duration, video.duration - 0.05);
-        video.currentTime = t;
+        if (isMobile) {
+          // Throttle video.currentTime updates on mobile to ~25fps to eliminate iOS WebKit seek lag
+          const now = performance.now();
+          if (now - lastSetTime > 38 || Math.abs(t - video.currentTime) > 0.06) {
+            video.currentTime = t;
+            lastSetTime = now;
+          }
+        } else {
+          video.currentTime = t;
+        }
       }
 
       // Keep background video bright and visible throughout scroll
