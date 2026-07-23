@@ -391,6 +391,15 @@ p, li { text-wrap: pretty; }
 .hero-progress-dot{width:30px;height:3px;background:rgba(255,248,240,.24);border-radius:3px;transition:background .35s,width .35s,box-shadow .35s;}
 .hero-progress-dot.is-active{background:var(--gold);width:52px;box-shadow:0 0 16px rgba(245,166,35,.6);}
 @media(max-width:768px){.hero-heading{white-space:normal;font-size:clamp(1.8rem, 7.5vw, 3rem);}}
+@media(max-width:600px){
+  .nav { padding: 10px 14px !important; }
+  .nav__toggle { width: 44px; height: 44px; }
+  .nav__toggle svg { width: 22px; height: 22px; }
+  .nav__logo-img { height: 32px !important; }
+  .nav__cta-label { padding: 8px 12px !important; font-size: 0.72rem !important; letter-spacing: 0.05em !important; }
+  .nav__cta-icon { width: 36px !important; }
+  .nav__cta-icon svg { width: 14px !important; height: 14px !important; }
+}
 
 /* ============================================================
    MARQUEE
@@ -1480,7 +1489,7 @@ section[id]{scroll-margin-top:88px;}
 <section class="hero" id="hero">
   <div class="editorial-vertical" style="color: rgba(255,255,255,0.25);">EST. 2024 &nbsp; | &nbsp; WIZ KIDZ CHEESESTEAKS</div>
   <div class="hero-sticky">
-    <video class="hero-video" id="heroVideo" muted playsinline preload="auto" poster="Cheesesteak_exploding_mid-air_202607221705.jpeg">
+    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="Cheesesteak_exploding_mid-air_202607221705.jpeg">
       <source src="cheesesteak-scrub.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay"></div>
@@ -1998,9 +2007,13 @@ section[id]{scroll-margin-top:88px;}
 
   // ===== Hero scroll-scrub + rotating headings (smooth lerp) =====
   function setupScrub(){
+    const isTouch = ('ontouchstart' in window) || matchMedia('(max-width:768px)').matches;
     const heads = document.querySelectorAll('.hero-heading');
     const dots = document.querySelectorAll('.hero-progress-dot');
-    video.pause();
+    
+    // Ensure video is playing on touch devices for fluid WebKit video playback
+    video.play().catch(() => {});
+
     const hero = document.getElementById('hero');
     const overlay = hero.querySelector('.hero-overlay');
     let last = -1;
@@ -2009,7 +2022,7 @@ section[id]{scroll-margin-top:88px;}
     let rafRunning = false;
 
     // Lerp factor: lower = smoother / more lag, higher = snappier
-    const LERP = 0.15; // Increased from 0.025 to reduce lag and feel more responsive
+    const LERP = 0.15;
     // Threshold to stop the rAF loop when close enough
     const EPSILON = 0.0001;
 
@@ -2028,8 +2041,8 @@ section[id]{scroll-margin-top:88px;}
         currentProgress = targetProgress;
       }
 
-      // Set video time
-      if (!isNaN(video.duration)) {
+      // Set video time frame-by-frame on desktop
+      if (!isTouch && !isNaN(video.duration)) {
         const t = Math.min(currentProgress * video.duration, video.duration - 0.05);
         video.currentTime = t;
       }
