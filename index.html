@@ -2016,17 +2016,19 @@ section[id]{scroll-margin-top:88px;}
 
   // ===== Hero scroll-scrub + rotating headings (smooth lerp) =====
   function setupScrub(){
-    const isMobile = ('ontouchstart' in window) || matchMedia('(max-width:768px)').matches;
     const heads = document.querySelectorAll('.hero-heading');
     const dots = document.querySelectorAll('.hero-progress-dot');
     
-    if (isMobile) {
-      video.muted = true;
-      video.playsInline = true;
-      video.play().catch(() => {});
-    } else {
-      video.pause();
-    }
+    video.muted = true;
+    video.playsInline = true;
+    
+    // Unlock WebKit media decoder for iOS Safari frame-by-frame seeking
+    const unlockWebkit = () => {
+      video.play().then(() => video.pause()).catch(() => {});
+    };
+    unlockWebkit();
+    window.addEventListener('touchstart', unlockWebkit, { once: true });
+    window.addEventListener('scroll', unlockWebkit, { once: true });
 
     const hero = document.getElementById('hero');
     const overlay = hero.querySelector('.hero-overlay');
@@ -2055,8 +2057,8 @@ section[id]{scroll-margin-top:88px;}
         currentProgress = targetProgress;
       }
 
-      // Set video time frame-by-frame on desktop
-      if (!isMobile && !isNaN(video.duration)) {
+      // Set video time frame-by-frame on scroll across ALL devices (mobile & desktop)
+      if (!isNaN(video.duration) && video.duration > 0) {
         const t = Math.min(currentProgress * video.duration, video.duration - 0.05);
         video.currentTime = t;
       }
