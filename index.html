@@ -1491,7 +1491,7 @@ section[id]{scroll-margin-top:88px;}
 <section class="hero" id="hero">
   <div class="editorial-vertical" style="color: rgba(255,255,255,0.25);">EST. 2024 &nbsp; | &nbsp; WIZ KIDZ CHEESESTEAKS</div>
   <div class="hero-sticky">
-    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="Cheesesteak_exploding_mid-air_202607221705.jpeg">
+    <video class="hero-video" id="heroVideo" muted playsinline webkit-playsinline preload="auto" poster="Cheesesteak_exploding_mid-air_202607221705.jpeg">
       <source src="cheesesteak-scrub.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay"></div>
@@ -2009,12 +2009,9 @@ section[id]{scroll-margin-top:88px;}
 
   // ===== Hero scroll-scrub + rotating headings (smooth lerp) =====
   function setupScrub(){
-    const isTouch = ('ontouchstart' in window) || matchMedia('(max-width:768px)').matches;
     const heads = document.querySelectorAll('.hero-heading');
     const dots = document.querySelectorAll('.hero-progress-dot');
-    
-    // Ensure video is playing on touch devices for fluid WebKit video playback
-    video.play().catch(() => {});
+    video.pause();
 
     const hero = document.getElementById('hero');
     const overlay = hero.querySelector('.hero-overlay');
@@ -2043,8 +2040,8 @@ section[id]{scroll-margin-top:88px;}
         currentProgress = targetProgress;
       }
 
-      // Set video time frame-by-frame on desktop
-      if (!isTouch && !isNaN(video.duration)) {
+      // Set video time frame-by-frame on scroll (mobile & desktop)
+      if (!isNaN(video.duration)) {
         const t = Math.min(currentProgress * video.duration, video.duration - 0.05);
         video.currentTime = t;
       }
