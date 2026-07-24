@@ -94,7 +94,37 @@ p, li { text-wrap: pretty; }
 .section{padding:var(--sec) 0;position:relative;}
 .center{text-align:center;}
 
-/* Promo Bar */
+
+/* SITE HEADER & NON-OVERLAPPING NAV */
+.site-header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 250;
+  width: 100%;
+}
+.promo-bar {
+  position: relative !important;
+  top: 0 !important;
+  background: linear-gradient(90deg, var(--gold-deep) 0%, var(--gold) 50%, var(--gold-deep) 100%);
+  color: #0B0F17;
+  padding: 8px 16px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: center;
+  z-index: 260;
+  width: 100%;
+}
+.promo-bar a { text-decoration: underline; margin-left: 6px; color: #0B0F17; font-weight: 800; }
+.nav {
+  position: relative !important;
+  top: 0 !important;
+  z-index: 240;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  padding: 14px var(--pad); background: transparent !important; border: none !important;
+  max-width: var(--max); margin: 0 auto; width: 100%;
+}
+
 .promo-bar {
   position: sticky; top: 0;
   background: linear-gradient(90deg, var(--gold-deep) 0%, var(--gold) 50%, var(--gold-deep) 100%);
@@ -1104,30 +1134,34 @@ html.lenis, html.lenis body {
 
 
 <!-- PROMO ANNOUNCEMENT BAR -->
-<div class="promo-bar">
-  ✨ $50 Off Your First Deep Clean! (Valid 7/15 – 8/30) — <a href="#contact">Claim Your Discount &rarr;</a>
-</div>
+<header class="site-header">
+  <div class="promo-bar">
+    ✨ <strong>$50 Off Your First Deep Clean!</strong> (Valid 7/15 – 8/30) &mdash; <a href="#contact">Claim Your Discount &rarr;</a>
+  </div>
+  <nav class="nav" id="mainNav">
+    <button class="nav__toggle" id="navToggle" aria-label="Toggle Menu">
+      <svg class="nav__toggle-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg class="nav__toggle-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
 
-<!-- PRELOADER -->
-<div id="preloader">
-  <img loading="lazy" decoding="async" src="public/PHilly-shine-cleaning-co-1-300x240-removebg-preview.png" alt="Philly Shine Cleaning Co." class="brand-logo">
-  <div class="brand-sub">Premium Residential Cleaning in Philadelphia</div>
-  <div class="pct" id="pct">0%</div>
-  <div class="barwrap"><div class="bar" id="bar"></div></div>
-</div>
+    <a href="#" class="nav__logo" aria-label="Philly Shine Cleaning Co.">
+      <div class="brand-logo-wrap" style="display:flex; align-items:center; gap:10px;">
+        <div style="width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg, var(--gold-2), var(--gold-deep)); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(212,175,55,0.45); flex-shrink:0;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="#0B0F17"/></svg>
+        </div>
+        <div style="display:flex; flex-direction:column; text-align:left;">
+          <span style="font-family:var(--font-display); font-weight:800; font-size:1.25rem; color:#fff; line-height:1.0; letter-spacing:-0.02em;">Philly <span style="color:var(--gold-2);">Shine</span></span>
+          <span style="font-family:var(--font-ui); font-weight:700; font-size:0.62rem; color:var(--gold); letter-spacing:0.18em; text-transform:uppercase; margin-top:2px;">Cleaning Co.</span>
+        </div>
+      </div>
+    </a>
 
-<!-- NAV HEADER -->
-<nav class="nav" id="nav">
-  <button class="nav__toggle" id="navToggle" aria-label="Open navigation menu">
-    <svg class="nav__toggle-open" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20 12H4M20 6H4M20 18H4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    <svg class="nav__toggle-close" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-  </button>
-  <a href="#" class="nav__logo"><img loading="lazy" decoding="async" src="public/PHilly-shine-cleaning-co-1-300x240-removebg-preview.png" alt="Philly Shine Cleaning Co." class="nav__logo-img"></a>
-  <a href="#contact" class="nav__cta">
-    <span class="nav__cta-label">Get Quote</span>
-    <span class="nav__cta-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-  </a>
-</nav>
+    <a href="#contact" class="nav__cta">
+      <span class="nav__cta-text">GET QUOTE</span>
+      <span class="nav__cta-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+    </a>
+  </nav>
+</header>
 
 <!-- FULLSCREEN MENU -->
 <div class="nav-menu" id="navMenu">
@@ -1442,29 +1476,7 @@ html.lenis, html.lenis body {
         <a href="#contact" class="btn btn--dark" style="margin-top:auto; width:100%;">Get Transition Quote</a>
       </div>
 
-    <!-- INTERACTIVE ROOM SCOPE MATRIX -->
-    <div class="scope-matrix-card reveal d2">
-      <div style="text-align:center; margin-bottom:20px;">
-        <span style="font-size:0.8rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold-2);">ROOM-BY-ROOM DETAILS</span>
-        <h3 style="font-family:var(--font-display); font-size:1.6rem; color:#fff; margin-top:6px;">Explore Cleaning Scope By Space</h3>
-      </div>
-
-      <div class="scope-tabs" id="scopeTabs">
-        <button class="scope-tab active" data-target="living">🛋️ Living Rooms &amp; Bedrooms</button>
-        <button class="scope-tab" data-target="kitchen">🍳 Kitchen &amp; Appliances</button>
-        <button class="scope-tab" data-target="bathroom">🛁 Bathrooms &amp; Tile</button>
-        <button class="scope-tab" data-target="addons">✨ Optional Upgrades</button>
-      </div>
-
-      <div class="scope-grid" id="scopeGrid">
-        <!-- Content inserted dynamically by JS -->
-      </div>
-    </div>
-    </div>
-  </div>
-</section>
-
-<!-- COMMON QUESTIONS FAQ -->
+    <!-- COMMON QUESTIONS FAQ -->
 
 <!-- WEBFLOW INTERACTIVE BEFORE / AFTER SLIDER -->
 <section class="section" style="background:var(--cream); color:var(--ink);">
