@@ -1,0 +1,9 @@
+{
+  "name": "philly-shine-cleaning",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Philly Shine Cleaning Co. Static Website",
+  "scripts": {
+    "build": "echo 'Static build complete'"
+  }
+}
