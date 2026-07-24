@@ -1,2 +1,6 @@
+*.py
+check_js.js
+*.png
+!images/*.png
 .DS_Store
 all-skills/
