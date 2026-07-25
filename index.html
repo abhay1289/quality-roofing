@@ -1128,6 +1128,35 @@ html.lenis, html.lenis body {
   .contact-split { gap: 32px !important; }
 }
 
+
+/* Fix Mobile Header Overlap in Hero */
+@media (max-width: 768px) {
+  .hero-content {
+    justify-content: flex-start !important;
+    padding-top: 130px !important;
+    padding-bottom: 24px !important;
+  }
+  .hero-kicker {
+    margin-top: 8px !important;
+    margin-bottom: 10px !important;
+    font-size: 0.80rem !important;
+  }
+  .hero-headings {
+    margin-bottom: 14px !important;
+    padding: 6px 12px !important;
+    background: transparent !important;
+    border: none !important;
+  }
+  .hero-heading {
+    font-size: clamp(1.5rem, 6.5vw, 2.2rem) !important;
+  }
+  .hero .lead {
+    font-size: 0.92rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 18px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1194,14 +1223,6 @@ html.lenis, html.lenis body {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
         <a href="#services" class="btn btn--ghost">Explore Services</a>
-      </div>
-      <div class="human-trust-pill">
-        <div class="avatar-stack">
-          <span class="avatar-initial">JS</span>
-          <span class="avatar-initial">ML</span>
-          <span class="avatar-initial">EC</span>
-        </div>
-        <span>Loved by 500+ Philly Families</span> &nbsp;•&nbsp; <span>⚡ Quotes in 2 Mins</span> &nbsp;•&nbsp; <span>100% Pet-Safe</span>
       </div>
     </div>
   </div>
