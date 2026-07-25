@@ -759,10 +759,11 @@ body.loaded .hero-content .hero-cta-row { opacity: 1; transform: none; }
   .hero-cta-row { flex-direction: column; width: 100%; gap: 12px; }
   .hero-cta-row .btn { width: 100%; justify-content: center; }
 
-  .nav { top: 28px; padding: 10px var(--pad); }
-  .nav__logo-img { height: 54px; }
-  .nav__cta-text, .nav__cta-label { padding: 8px 14px; font-size: 0.72rem; }
-  .nav__cta-icon { width: 34px; }
+  .nav { top: 0; padding: 10px var(--pad); }
+  .nav__toggle { width: 40px; height: 40px; }
+  .nav__logo-img { height: 42px; }
+  .nav__cta-text, .nav__cta-label { padding: 6px 12px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.05em; }
+  .nav__cta-icon { width: 30px; }
   .nav--scrolled { padding: 8px var(--pad); }
 
   .display-1 { font-size: clamp(2rem, 8vw, 3rem) !important; }
@@ -1157,6 +1158,17 @@ html.lenis, html.lenis body {
     line-height: 1.5 !important;
     margin-bottom: 22px !important;
   }
+}
+
+
+@media (max-width: 480px) {
+  .nav { padding: 8px 12px !important; }
+  .nav__toggle { width: 36px !important; height: 36px !important; }
+  .nav__toggle svg { width: 16px; height: 16px; }
+  .nav__logo-img { height: 36px !important; }
+  .nav__cta-text, .nav__cta-label { padding: 5px 9px !important; font-size: 0.62rem !important; }
+  .nav__cta-icon { width: 26px !important; }
+  .nav__cta-icon svg { width: 11px; height: 11px; }
 }
 
 </style>
