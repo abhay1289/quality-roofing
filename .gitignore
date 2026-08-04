@@ -4,3 +4,4 @@ check_js.js
 !images/*.png
 .DS_Store
 all-skills/
+.vercel
