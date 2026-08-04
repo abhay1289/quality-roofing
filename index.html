@@ -787,7 +787,34 @@ textarea.form-control{min-height:120px;resize:vertical;}
 .footer__col ul{list-style:none;display:flex;flex-direction:column;gap:12px;}
 .footer__col a,.footer__col li{font-size:.94rem;color:rgba(255,255,255,.72);transition:color .2s, transform .25s var(--ease);}
 .footer__col a:hover{color:var(--gold-2); transform:translateX(3px);}
-.footer__bottom{padding:24px 0 8px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.88rem;color:rgba(223,234,244,.62);}
+.footer__bottom{padding:24px 0 8px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:.88rem;color:rgba(223,234,244,.62);}
+.footer__trust{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.gg-badge{
+  display:inline-flex;align-items:center;gap:12px;padding:10px 16px 10px 12px;
+  border-radius:16px;color:#fff;
+  background:linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.78));
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 10px 24px rgba(0,0,0,.28);
+}
+.gg-badge__check{
+  width:42px;height:42px;border-radius:50%;flex:0 0 auto;
+  display:grid;place-items:center;
+  background:radial-gradient(circle at 35% 30%, #57E389 0%, #34A853 55%, #1E8E3E 100%);
+  box-shadow:0 6px 14px rgba(52,168,83,.45), inset 0 1px 0 rgba(255,255,255,.35);
+}
+.gg-badge__check svg{width:22px;height:22px;display:block;}
+.gg-badge__copy{display:flex;flex-direction:column;gap:2px;line-height:1.05;}
+.gg-badge__google{
+  font-family:Arial, Helvetica, sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:-.02em;
+}
+.gg-badge__google .g1{color:#4285F4}.gg-badge__google .g2{color:#EA4335}
+.gg-badge__google .g3{color:#FBBC05}.gg-badge__google .g4{color:#4285F4}
+.gg-badge__google .g5{color:#34A853}.gg-badge__google .g6{color:#EA4335}
+.gg-badge__label{
+  font-family:var(--font-ui);font-weight:700;font-size:.92rem;color:#fff;letter-spacing:.01em;
+}
+.gg-badge__stars{display:flex;gap:2px;margin-top:3px;color:#FBBC05;font-size:.78rem;letter-spacing:.02em;}
+.gg-badge__stars span{filter:drop-shadow(0 1px 1px rgba(0,0,0,.35));}
 .footer__wordmark-wrap{
   position:relative;z-index:1;width:100%;margin-top:28px;padding:0;
   overflow:visible;line-height:1;
@@ -1305,7 +1332,8 @@ body.loaded .hero-content .hero-cta-row { opacity: 1; transform: none; }
   
   .testi-card-scroll { width: clamp(260px, 80vw, 300px) !important; padding: 20px; }
   
-  .footer__bottom { flex-direction: column; text-align: center; }
+  .footer__bottom { flex-direction: column; text-align: center; justify-content: center; }
+  .footer__trust { justify-content: center; }
   .human-trust-pill { flex-wrap: wrap; justify-content: center; text-align: center; }
 }
 
@@ -2718,8 +2746,22 @@ body.nav-open, body.quote-open { overflow: hidden; }
     </div>
 
     <div class="footer__bottom">
-      <span>© 2026 Quality Roofing Solutions. All rights reserved.</span> &nbsp;•&nbsp; <span>Proudly serving County Leitrim &amp; surrounding areas</span>
-      <span>County Leitrim · Fully Insured Roofing</span>
+      <div class="footer__trust">
+        <div class="gg-badge" role="img" aria-label="Google Guaranteed">
+          <span class="gg-badge__check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M20 6.5 9.5 17 4 11.5" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="gg-badge__copy">
+            <span class="gg-badge__google" aria-hidden="true"><span class="g1">G</span><span class="g2">o</span><span class="g3">o</span><span class="g4">g</span><span class="g5">l</span><span class="g6">e</span></span>
+            <span class="gg-badge__label">Guaranteed</span>
+            <span class="gg-badge__stars" aria-hidden="true"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></span>
+          </span>
+        </div>
+      </div>
+      <div>
+        <span>© 2026 Quality Roofing Solutions. All rights reserved.</span><br>
+        <span>Proudly serving County Leitrim &amp; surrounding areas · Fully Insured</span>
+      </div>
     </div>
   </div>
 
