@@ -7,9 +7,11 @@
 <meta name="description" content="Quality Roofing Solutions delivers reliable, durable roofing across County Leitrim &amp; surrounding areas. Roof repairs, new installations, flat roofing, chimney repairs, guttering, and moss removal. Fully insured, free on-site inspections, emergency repairs available.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="images/roofing-hero-poster.jpg" fetchpriority="high">
-<link rel="preload" as="image" href="images/img-about.webp" type="image/webp">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="images/roofing-hero-poster-mobile.webp" type="image/webp" media="(max-width: 900px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/roofing-hero-poster.jpg" media="(min-width: 901px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/img-about-sm.webp" type="image/webp" media="(max-width: 768px)">
+<link rel="preload" as="image" href="images/img-about.webp" type="image/webp" media="(min-width: 769px)">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css">
 <style>
 /* ============================================================
@@ -1032,6 +1034,23 @@ body.loaded .hero-content .hero-cta-row { opacity: 1; transform: none; }
 
 
 
+/* Mobile: tiny background plates */
+@media (max-width: 768px) {
+  .footer__bg {
+    background-image:
+      linear-gradient(180deg, rgba(6,26,45,.72) 0%, rgba(11,42,70,.78) 45%, rgba(6,26,45,.92) 100%),
+      url('images/img-bg-footer-sm.webp') !important;
+    background-size: cover;
+    background-position: center;
+  }
+  #stack-features {
+    background-image: url('images/img-bg-craft-sm.webp') !important;
+  }
+  #estimator {
+    background-image: url('images/img-bg-estimator-sm.webp') !important;
+  }
+}
+
 /* ---- TABLET: max-width 1024px ---- */
 @media (max-width: 1024px) {
   .hero { height: 280vh; height: 280dvh; }
@@ -1681,8 +1700,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
 <!-- HERO SECTION WITH VIDEO SCROLL-SCRUB -->
 <section class="hero" id="hero" style="touch-action: pan-y;">
   <div class="hero-sticky">
-    <video class="hero-video" id="heroVideo" muted playsinline webkit-playsinline disableRemotePlayback x5-video-player-type="h5" preload="auto" poster="images/roofing-hero-poster.jpg" fetchpriority="high">
-      <source src="images/roofing-hero-scrub.mp4" type="video/mp4">
+    <video class="hero-video" id="heroVideo" muted playsinline webkit-playsinline disableRemotePlayback x5-video-player-type="h5" preload="metadata" poster="images/roofing-hero-poster-mobile.jpg" fetchpriority="high">
+      <!-- src chosen in JS for device/network -->
     </video>
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -1725,6 +1744,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
       <div class="about__media-col reveal d1">
         <div class="about__media">
           <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-about-sm.webp">
+            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-about-sm.jpg">
             <source type="image/webp" srcset="images/img-about.webp">
             <img loading="eager" decoding="async" src="images/img-about.jpg" alt="Quality Roofing Solutions roofing work in County Leitrim" width="1400" height="933">
           </picture>
@@ -1811,6 +1832,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
         </div>
         <div class="framer-stack-card__media">
           <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-repairs-sm.webp">
+            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-repairs-sm.jpg">
             <source type="image/webp" srcset="images/img-repairs.webp">
             <img loading="lazy" decoding="async" src="images/img-repairs.jpg" alt="Roof repairs and maintenance in Leitrim" width="1400" height="933">
           </picture>
@@ -1827,6 +1850,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
         </div>
         <div class="framer-stack-card__media">
           <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-installations-sm.webp">
+            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-installations-sm.jpg">
             <source type="image/webp" srcset="images/img-installations.webp">
             <img loading="lazy" decoding="async" src="images/img-installations.jpg" alt="New roof installation using premium materials" width="1400" height="933">
           </picture>
@@ -1843,6 +1868,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
         </div>
         <div class="framer-stack-card__media">
           <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-chimney-sm.webp">
+            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-chimney-sm.jpg">
             <source type="image/webp" srcset="images/img-chimney.webp">
             <img loading="lazy" decoding="async" src="images/img-chimney.jpg" alt="Chimney repairs and re-pointing with fresh leadwork" width="1400" height="933">
           </picture>
@@ -1859,6 +1886,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
         </div>
         <div class="framer-stack-card__media">
           <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-flat-roof-sm.webp">
+            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-flat-roof-sm.jpg">
             <source type="image/webp" srcset="images/img-flat-roof.webp">
             <img loading="lazy" decoding="async" src="images/img-flat-roof.jpg" alt="Flat roofing systems including EPDM and felt" width="1400" height="933">
           </picture>
@@ -1881,6 +1910,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
         <div class="service-card__media">
           <div class="service-card__badge">MOST POPULAR</div>
           <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-installations-b-sm.webp">
+            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-installations-b-sm.jpg">
             <source type="image/webp" srcset="images/img-installations-b.webp">
             <img loading="lazy" decoding="async" src="images/img-installations-b.jpg" alt="New roof installations" width="1400" height="933">
           </picture>
@@ -1895,6 +1926,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
       <article class="service-card reveal d2">
         <div class="service-card__media">
           <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-repairs-b-sm.webp">
+            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-repairs-b-sm.jpg">
             <source type="image/webp" srcset="images/img-repairs-b.webp">
             <img loading="lazy" decoding="async" src="images/img-repairs-b.jpg" alt="Roof repairs and maintenance" width="1400" height="933">
           </picture>
@@ -1909,6 +1942,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
       <article class="service-card reveal d3">
         <div class="service-card__media">
           <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-flat-roof-b-sm.webp">
+            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-flat-roof-b-sm.jpg">
             <source type="image/webp" srcset="images/img-flat-roof-b.webp">
             <img loading="lazy" decoding="async" src="images/img-flat-roof-b.jpg" alt="Flat roofing systems" width="1400" height="933">
           </picture>
@@ -1923,6 +1958,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
       <article class="service-card reveal d1">
         <div class="service-card__media">
           <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-chimney-b-sm.webp">
+            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-chimney-b-sm.jpg">
             <source type="image/webp" srcset="images/img-chimney-b.webp">
             <img loading="lazy" decoding="async" src="images/img-chimney-b.jpg" alt="Chimney repairs and re-pointing" width="1400" height="933">
           </picture>
@@ -1937,6 +1974,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
       <article class="service-card reveal d2">
         <div class="service-card__media">
           <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-guttering-sm.webp">
+            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-guttering-sm.jpg">
             <source type="image/webp" srcset="images/img-guttering.webp">
             <img loading="lazy" decoding="async" src="images/img-guttering.jpg" alt="Guttering, fascia and soffit installation" width="1400" height="933">
           </picture>
@@ -1951,6 +1990,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
       <article class="service-card reveal d3">
         <div class="service-card__media">
           <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-moss-sm.webp">
+            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-moss-sm.jpg">
             <source type="image/webp" srcset="images/img-moss.webp">
             <img loading="lazy" decoding="async" src="images/img-moss.jpg" alt="Roof cleaning and moss removal" width="1400" height="933">
           </picture>
@@ -1966,7 +2007,7 @@ body.nav-open, body.quote-open { overflow: hidden; }
 </section>
 <!-- ROOFING SHOWCASE VIDEO (lazy — avoids re-downloading hero scrub on first paint) -->
 <section class="showcase-section" id="checklist">
-  <video class="showcase-video__el" id="showcaseVideo" muted loop playsinline webkit-playsinline disableRemotePlayback preload="none" poster="images/roofing-hero-poster.jpg" data-src="images/roofing-hero-scrub.mp4"></video>
+  <video class="showcase-video__el" id="showcaseVideo" muted loop playsinline webkit-playsinline disableRemotePlayback preload="none" poster="images/roofing-hero-poster.jpg" data-src-mobile="images/roofing-hero-scrub-mobile.mp4" data-src="images/roofing-hero-scrub.mp4"></video>
 </section>
 
 <!-- WEBFLOW INTERACTIVE BEFORE / AFTER SLIDER -->
@@ -1984,13 +2025,17 @@ body.nav-open, body.quote-open { overflow: hidden; }
       <!-- Base (right) = clean after; clipped left layer = mossy before -->
       <div class="ba-layer ba-before">
         <picture>
-          <source type="image/webp" srcset="images/img-after.webp">
+          <source media="(max-width: 768px)" type="image/webp" srcset="images/img-after-sm.webp">
+            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-after-sm.jpg">
+            <source type="image/webp" srcset="images/img-after.webp">
           <img loading="lazy" decoding="async" src="images/img-after.jpg" alt="Roof after cleaning and restoration" width="1400" height="933">
         </picture>
       </div>
       <div class="ba-layer ba-after" id="baAfterLayer">
         <picture>
-          <source type="image/webp" srcset="images/img-before.webp">
+          <source media="(max-width: 768px)" type="image/webp" srcset="images/img-before-sm.webp">
+            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-before-sm.jpg">
+            <source type="image/webp" srcset="images/img-before.webp">
           <img loading="lazy" decoding="async" src="images/img-before.jpg" alt="Roof before cleaning — moss and weathering" width="1400" height="933">
         </picture>
       </div>
@@ -2627,31 +2672,65 @@ body.nav-open, body.quote-open { overflow: hidden; }
     if (e.key === 'Escape' && quoteModal?.classList.contains('is-open')) closeQuoteModal();
   });
 
-  // ===== Preloader + Hero Video Setup =====
+  // ===== Preloader + Hero Video Setup (mobile-first, non-blocking) =====
   const video = document.getElementById('heroVideo');
   const pre = document.getElementById('preloader');
   const pctEl = document.getElementById('pct');
   const barEl = document.getElementById('bar');
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const slowNet = !!(conn && (conn.saveData || /2g/.test(String(conn.effectiveType || ''))));
+  const useMobileHero = isTouch || slowNet || (window.innerWidth || 0) <= 900;
+  const heroPoster = useMobileHero ? 'images/roofing-hero-poster-mobile.jpg' : 'images/roofing-hero-poster.jpg';
+  const heroSrc = useMobileHero ? 'images/roofing-hero-scrub-mobile.mp4' : 'images/roofing-hero-scrub.mp4';
+  const heroFps = useMobileHero ? 20 : 30;
+  window.__heroMedia = { src: heroSrc, poster: heroPoster, fps: heroFps, mobile: useMobileHero };
+
   let ready = false;
+  let finished = false;
 
   if (video) {
-    ['loadeddata','canplay','canplaythrough'].forEach(e => video.addEventListener(e, () => ready = true, {once:true}));
-    video.addEventListener('error', () => ready = true, {once:true});
+    video.poster = heroPoster;
+    video.preload = 'auto';
+    video.setAttribute('playsinline', '');
+    video.muted = true;
+    // Assign compact source before load so phones never pull the desktop 6MB file
+    while (video.firstChild) video.removeChild(video.firstChild);
+    video.removeAttribute('src');
+    video.src = heroSrc;
+    try { video.load(); } catch (_) {}
+
+    // Don't wait for canplaythrough — first frame / metadata is enough to enter
+    video.addEventListener('loadeddata', () => { ready = true; }, { once: true });
+    video.addEventListener('canplay', () => { ready = true; }, { once: true });
+    video.addEventListener('error', () => { ready = true; }, { once: true });
   }
-  setTimeout(() => ready = true, 1800);
+
+  // Mobile: dismiss almost immediately (poster is already painted). Desktop: slightly longer.
+  setTimeout(() => { ready = true; }, useMobileHero ? 480 : 1200);
 
   let p = 0;
   const timer = setInterval(() => {
-    if (video && (video.readyState >= 3 || video.error)) ready = true;
-    const target = ready ? 100 : Math.min(90, p + Math.random()*8);
-    p += (target - p) * 0.3;
+    if (video && (video.readyState >= 2 || video.error)) ready = true;
+    const target = ready ? 100 : Math.min(useMobileHero ? 92 : 88, p + (useMobileHero ? 14 : 8));
+    p += (target - p) * (useMobileHero ? 0.45 : 0.3);
     const shown = Math.round(p);
     if (pctEl) pctEl.textContent = shown + '%';
     if (barEl) barEl.style.width = shown + '%';
-    if (p >= 99.5) { clearInterval(timer); if(pctEl) pctEl.textContent = '100%'; if(barEl) barEl.style.width = '100%'; finish(); }
-  }, 50);
+    if (p >= 99.2) {
+      clearInterval(timer);
+      if (pctEl) pctEl.textContent = '100%';
+      if (barEl) barEl.style.width = '100%';
+      finish();
+    }
+  }, useMobileHero ? 32 : 50);
 
-  function finish(){ if(pre) pre.classList.add('hide'); setupScrub(); setTimeout(function(){ document.body.classList.add('loaded'); }, 200); }
+  function finish(){
+    if (finished) return;
+    finished = true;
+    if (pre) pre.classList.add('hide');
+    setupScrub();
+    setTimeout(function(){ document.body.classList.add('loaded'); }, useMobileHero ? 80 : 200);
+  }
 
   // ===== Cinematic hero scroll-scrub — frame-rate + device sync =====
   function setupScrub(){
@@ -2667,7 +2746,7 @@ body.nav-open, body.quote-open { overflow: hidden; }
     let scrollable = 1, duration = 0;
     // Time-based lag (seconds) — identical feel at 60Hz / 120Hz / mobile
     const scrubLag = isTouch ? 0.28 : 0.38;
-    const frameStep = 1 / 30; // matches encode fps
+    const frameStep = 1 / (window.__heroMedia?.fps || (isTouch ? 20 : 30));
 
     video.preload = 'auto';
     video.setAttribute('playsinline', '');
@@ -2855,8 +2934,11 @@ body.nav-open, body.quote-open { overflow: hidden; }
   (function lazyShowcaseVideo() {
     const el = document.getElementById('showcaseVideo');
     if (!el) return;
-    const src = el.getAttribute('data-src');
+    const src = (window.__heroMedia && window.__heroMedia.mobile)
+      ? (el.getAttribute('data-src-mobile') || el.getAttribute('data-src'))
+      : el.getAttribute('data-src');
     if (!src) return;
+    if (window.__heroMedia?.poster) el.poster = window.__heroMedia.poster;
     const load = () => {
       if (el.dataset.loaded) return;
       el.dataset.loaded = '1';
@@ -2869,7 +2951,7 @@ body.nav-open, body.quote-open { overflow: hidden; }
     if (!('IntersectionObserver' in window)) { load(); return; }
     new IntersectionObserver((entries, obs) => {
       if (entries.some((e) => e.isIntersecting)) { obs.disconnect(); load(); }
-    }, { rootMargin: '200px 0px' }).observe(el);
+    }, { rootMargin: '120px 0px' }).observe(el);
   })();
 
   // ===== Fullscreen Menu =====
