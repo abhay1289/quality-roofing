@@ -7,8 +7,8 @@
 <meta name="description" content="Quality Roofing Solutions delivers reliable, durable roofing across County Leitrim &amp; surrounding areas. Roof repairs, new installations, flat roofing, chimney repairs, guttering, and moss removal. Fully insured, free on-site inspections, emergency repairs available.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="images/roofing-hero-poster.jpg">
-<link rel="preload" as="video" href="images/roofing-hero-scrub.mp4" type="video/mp4">
+<link rel="preload" as="image" href="images/roofing-hero-poster.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="images/img-about.webp" type="image/webp">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css">
 <style>
@@ -378,7 +378,7 @@ body.nav-open .nav__locale{border-left-color:rgba(11,42,70,.12);}
 .nav-menu__tel .tag-ic{color:var(--gold-deep);}
 
 /* HERO SECTION WITH SCROLL-SCRUB */
-.hero{position:relative;height:220vh;}
+.hero{position:relative;height:300vh;}
 .hero-sticky{position:sticky;top:0;height:100vh;height:100dvh;min-height:560px;overflow:hidden;background:#0a0a0a;}
 .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;transform:translate3d(0,0,0) scale(1.03);transform-origin:center;will-change:transform;backface-visibility:hidden;-webkit-backface-visibility:hidden;contain:strict;}
 .hero-overlay{position:absolute;inset:0;pointer-events:none;z-index:1;
@@ -482,6 +482,7 @@ body.quote-open{overflow:hidden;}
 .about__highlights li svg{color:var(--gold-deep);flex-shrink:0;}
 
 .about__media{position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-lg);}
+.about__media picture,.ba-layer picture,.framer-stack-card__media picture{display:contents;}
 .about__media img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .8s var(--ease);}
 .about__media:hover img{transform:scale(1.04);}
 .about__badge{position:absolute;left:24px;bottom:24px;background:linear-gradient(135deg, #123A5E 0%, #0C2740 100%);color:var(--cream);
@@ -670,7 +671,10 @@ textarea.form-control{min-height:120px;resize:vertical;}
   position:absolute;inset:0;z-index:0;pointer-events:none;
   background:
     linear-gradient(180deg, rgba(6,26,45,.72) 0%, rgba(11,42,70,.78) 45%, rgba(6,26,45,.92) 100%),
-    url('images/img-bg-footer.png') center / cover no-repeat;
+    image-set(
+      url('images/img-bg-footer.webp') type('image/webp'),
+      url('images/img-bg-footer.jpg') type('image/jpeg')
+    ) center / cover no-repeat;
   transform:scale(1.04); filter:saturate(1.05) contrast(1.05);
 }
 .footer__bg::after{
@@ -1030,7 +1034,7 @@ body.loaded .hero-content .hero-cta-row { opacity: 1; transform: none; }
 
 /* ---- TABLET: max-width 1024px ---- */
 @media (max-width: 1024px) {
-  .hero { height: 220vh; }
+  .hero { height: 280vh; }
   .hero-sticky { height: 100vh; height: 100dvh; min-height: 520px; }
   .hero-heading { font-size: clamp(2.15rem, 5.4vw, 3.1rem) !important; }
   .hero-headings { padding: 0; }
@@ -1044,7 +1048,7 @@ body.loaded .hero-content .hero-cta-row { opacity: 1; transform: none; }
 @media (max-width: 768px) {
   :root { --sec: clamp(48px, 6vw, 72px); --pad: clamp(18px, 5vw, 32px); }
   
-  .hero { height: 200vh; }
+  .hero { height: 260vh; }
   .hero-sticky { height: 100vh; height: 100dvh; min-height: 480px; }
   .hero-heading {
     white-space: normal !important; font-size: clamp(1.85rem, 7.4vw, 2.7rem) !important;
@@ -1135,7 +1139,7 @@ body.loaded .hero-content .hero-cta-row { opacity: 1; transform: none; }
 
 /* ---- SMALL MOBILE: max-width 480px ---- */
 @media (max-width: 480px) {
-  .hero { height: 200vh; }
+  .hero { height: 250vh; }
   .hero-heading { font-size: clamp(1.65rem, 7vw, 2.1rem) !important; }
   .hero-badge { font-size: .84rem; gap: 8px; align-items: flex-start; }
   .hero-badge__mark { width: 30px; height: 30px; border-radius: 9px; }
@@ -1720,7 +1724,10 @@ body.nav-open, body.quote-open { overflow: hidden; }
       <!-- Media -->
       <div class="about__media-col reveal d1">
         <div class="about__media">
-          <img loading="lazy" decoding="async" src="images/img-about.jpg" alt="Quality Roofing Solutions roofing work in County Leitrim">
+          <picture>
+            <source type="image/webp" srcset="images/img-about.webp">
+            <img loading="eager" decoding="async" src="images/img-about.jpg" alt="Quality Roofing Solutions roofing work in County Leitrim" width="1400" height="933">
+          </picture>
         </div>
       </div>
 
@@ -1784,7 +1791,7 @@ body.nav-open, body.quote-open { overflow: hidden; }
 <!-- SERVICES SECTION -->
 
 <!-- FRAMER STICKY STACKED CARDS SECTION -->
-<section class="stack-section parallax-section" id="stack-features" style="overflow:visible !important; background-image: url('images/img-bg-craft.png');">
+<section class="stack-section parallax-section" id="stack-features" style="overflow:visible !important; background-image: image-set(url('images/img-bg-craft.webp') type('image/webp'), url('images/img-bg-craft.jpg') type('image/jpeg'));">
   <div class="parallax-overlay"></div>
   <div class="wrap">
     <div class="center reveal">
@@ -1803,7 +1810,10 @@ body.nav-open, body.quote-open { overflow: hidden; }
           <a href="#contact" class="btn btn--gold" style="width:fit-content; margin-top:8px;">Book a Repair &rarr;</a>
         </div>
         <div class="framer-stack-card__media">
-          <img loading="lazy" decoding="async" src="images/img-repairs.jpg" alt="Roof repairs and maintenance in Leitrim">
+          <picture>
+            <source type="image/webp" srcset="images/img-repairs.webp">
+            <img loading="lazy" decoding="async" src="images/img-repairs.jpg" alt="Roof repairs and maintenance in Leitrim" width="1400" height="933">
+          </picture>
         </div>
       </div>
 
@@ -1816,7 +1826,10 @@ body.nav-open, body.quote-open { overflow: hidden; }
           <a href="#checklist" class="btn btn--gold" style="width:fit-content; margin-top:8px;">See Service Tiers &rarr;</a>
         </div>
         <div class="framer-stack-card__media">
-          <img loading="lazy" decoding="async" src="images/img-installations.jpg" alt="New roof installation using premium materials">
+          <picture>
+            <source type="image/webp" srcset="images/img-installations.webp">
+            <img loading="lazy" decoding="async" src="images/img-installations.jpg" alt="New roof installation using premium materials" width="1400" height="933">
+          </picture>
         </div>
       </div>
 
@@ -1829,7 +1842,10 @@ body.nav-open, body.quote-open { overflow: hidden; }
           <a href="#contact" class="btn btn--gold" style="width:fit-content; margin-top:8px;">Ask About Chimneys &rarr;</a>
         </div>
         <div class="framer-stack-card__media">
-          <img loading="lazy" decoding="async" src="images/img-chimney.jpg" alt="Chimney repairs and re-pointing with fresh leadwork">
+          <picture>
+            <source type="image/webp" srcset="images/img-chimney.webp">
+            <img loading="lazy" decoding="async" src="images/img-chimney.jpg" alt="Chimney repairs and re-pointing with fresh leadwork" width="1400" height="933">
+          </picture>
         </div>
       </div>
 
@@ -1842,7 +1858,10 @@ body.nav-open, body.quote-open { overflow: hidden; }
           <a href="#contact" class="btn btn--gold" style="width:fit-content; margin-top:8px;">Plan Flat Roof &rarr;</a>
         </div>
         <div class="framer-stack-card__media">
-          <img loading="lazy" decoding="async" src="images/img-flat-roof.jpg" alt="Flat roofing systems including EPDM and felt">
+          <picture>
+            <source type="image/webp" srcset="images/img-flat-roof.webp">
+            <img loading="lazy" decoding="async" src="images/img-flat-roof.jpg" alt="Flat roofing systems including EPDM and felt" width="1400" height="933">
+          </picture>
         </div>
       </div>
     </div>
@@ -1861,7 +1880,10 @@ body.nav-open, body.quote-open { overflow: hidden; }
       <article class="service-card service-card--featured reveal d1">
         <div class="service-card__media">
           <div class="service-card__badge">MOST POPULAR</div>
-          <img loading="lazy" decoding="async" src="images/img-installations-b.png" alt="New roof installations" width="640" height="400">
+          <picture>
+            <source type="image/webp" srcset="images/img-installations-b.webp">
+            <img loading="lazy" decoding="async" src="images/img-installations-b.jpg" alt="New roof installations" width="1400" height="933">
+          </picture>
         </div>
         <div class="service-card__body">
           <h3 class="service-card__title">New Roof Installations</h3>
@@ -1872,7 +1894,10 @@ body.nav-open, body.quote-open { overflow: hidden; }
 
       <article class="service-card reveal d2">
         <div class="service-card__media">
-          <img loading="lazy" decoding="async" src="images/img-repairs-b.png" alt="Roof repairs and maintenance" width="480" height="300">
+          <picture>
+            <source type="image/webp" srcset="images/img-repairs-b.webp">
+            <img loading="lazy" decoding="async" src="images/img-repairs-b.jpg" alt="Roof repairs and maintenance" width="1400" height="933">
+          </picture>
         </div>
         <div class="service-card__body">
           <h3 class="service-card__title">Roof Repairs &amp; Maintenance</h3>
@@ -1883,7 +1908,10 @@ body.nav-open, body.quote-open { overflow: hidden; }
 
       <article class="service-card reveal d3">
         <div class="service-card__media">
-          <img loading="lazy" decoding="async" src="images/img-flat-roof-b.png" alt="Flat roofing systems" width="480" height="300">
+          <picture>
+            <source type="image/webp" srcset="images/img-flat-roof-b.webp">
+            <img loading="lazy" decoding="async" src="images/img-flat-roof-b.jpg" alt="Flat roofing systems" width="1400" height="933">
+          </picture>
         </div>
         <div class="service-card__body">
           <h3 class="service-card__title">Flat Roofing Systems</h3>
@@ -1894,7 +1922,10 @@ body.nav-open, body.quote-open { overflow: hidden; }
 
       <article class="service-card reveal d1">
         <div class="service-card__media">
-          <img loading="lazy" decoding="async" src="images/img-chimney-b.png" alt="Chimney repairs and re-pointing" width="480" height="300">
+          <picture>
+            <source type="image/webp" srcset="images/img-chimney-b.webp">
+            <img loading="lazy" decoding="async" src="images/img-chimney-b.jpg" alt="Chimney repairs and re-pointing" width="1400" height="933">
+          </picture>
         </div>
         <div class="service-card__body">
           <h3 class="service-card__title">Chimney Repairs &amp; Re-pointing</h3>
@@ -1905,7 +1936,10 @@ body.nav-open, body.quote-open { overflow: hidden; }
 
       <article class="service-card reveal d2">
         <div class="service-card__media">
-          <img loading="lazy" decoding="async" src="images/img-guttering.jpg" alt="Guttering, fascia and soffit installation" width="480" height="300">
+          <picture>
+            <source type="image/webp" srcset="images/img-guttering.webp">
+            <img loading="lazy" decoding="async" src="images/img-guttering.jpg" alt="Guttering, fascia and soffit installation" width="1400" height="933">
+          </picture>
         </div>
         <div class="service-card__body">
           <h3 class="service-card__title">Guttering, Fascia &amp; Soffit</h3>
@@ -1916,7 +1950,10 @@ body.nav-open, body.quote-open { overflow: hidden; }
 
       <article class="service-card reveal d3">
         <div class="service-card__media">
-          <img loading="lazy" decoding="async" src="images/img-moss.jpg" alt="Roof cleaning and moss removal" width="480" height="300">
+          <picture>
+            <source type="image/webp" srcset="images/img-moss.webp">
+            <img loading="lazy" decoding="async" src="images/img-moss.jpg" alt="Roof cleaning and moss removal" width="1400" height="933">
+          </picture>
         </div>
         <div class="service-card__body">
           <h3 class="service-card__title">Roof Cleaning &amp; Moss Removal</h3>
@@ -1927,11 +1964,9 @@ body.nav-open, body.quote-open { overflow: hidden; }
     </div>
   </div>
 </section>
-<!-- ROOFING SHOWCASE VIDEO (FULL SCREEN) -->
+<!-- ROOFING SHOWCASE VIDEO (lazy — avoids re-downloading hero scrub on first paint) -->
 <section class="showcase-section" id="checklist">
-  <video class="showcase-video__el" autoplay muted loop playsinline webkit-playsinline disableRemotePlayback preload="metadata">
-    <source src="images/roofing-hero-scrub.mp4" type="video/mp4">
-  </video>
+  <video class="showcase-video__el" id="showcaseVideo" muted loop playsinline webkit-playsinline disableRemotePlayback preload="none" poster="images/roofing-hero-poster.jpg" data-src="images/roofing-hero-scrub.mp4"></video>
 </section>
 
 <!-- WEBFLOW INTERACTIVE BEFORE / AFTER SLIDER -->
@@ -1948,10 +1983,16 @@ body.nav-open, body.quote-open { overflow: hidden; }
       <span class="ba-label ba-label--after">After</span>
       <!-- Base (right) = clean after; clipped left layer = mossy before -->
       <div class="ba-layer ba-before">
-        <img loading="lazy" decoding="async" src="images/img-after.jpg" alt="Roof after cleaning and restoration">
+        <picture>
+          <source type="image/webp" srcset="images/img-after.webp">
+          <img loading="lazy" decoding="async" src="images/img-after.jpg" alt="Roof after cleaning and restoration" width="1400" height="933">
+        </picture>
       </div>
       <div class="ba-layer ba-after" id="baAfterLayer">
-        <img loading="lazy" decoding="async" src="images/img-before.jpg" alt="Roof before cleaning — moss and weathering">
+        <picture>
+          <source type="image/webp" srcset="images/img-before.webp">
+          <img loading="lazy" decoding="async" src="images/img-before.jpg" alt="Roof before cleaning — moss and weathering" width="1400" height="933">
+        </picture>
       </div>
       <div class="ba-handle" id="baHandle">
         <div class="ba-handle-circle">
@@ -1963,7 +2004,7 @@ body.nav-open, body.quote-open { overflow: hidden; }
 </section>
 
 <!-- FRAMER INTERACTIVE PRICE ESTIMATOR -->
-<section class="section parallax-section" id="estimator" style="background-image: url('images/img-bg-estimator.png'); color:var(--cream);">
+<section class="section parallax-section" id="estimator" style="background-image: image-set(url('images/img-bg-estimator.webp') type('image/webp'), url('images/img-bg-estimator.jpg') type('image/jpeg')); color:var(--cream);">
   <div class="parallax-overlay"></div>
   <div class="wrap">
     <div class="center reveal" style="margin-bottom:40px;">
@@ -2621,8 +2662,9 @@ body.nav-open, body.quote-open { overflow: hidden; }
 
     let current = 0, target = 0, seekPending = false, rafId = null, lastIdx = -1;
     let heroVisible = true, videoReady = false, stallTimer = null, unlocked = false;
-    const ease = isTouch ? 0.38 : 0.22; // snappier on mobile decoders
-    const minDelta = isTouch ? 0.033 : 0.02;
+    // Softer ease + taller hero scroll = slower cinematic scrub
+    const ease = isTouch ? 0.16 : 0.09;
+    const minDelta = isTouch ? 0.04 : 0.028;
 
     video.preload = 'auto';
     video.setAttribute('playsinline', '');
@@ -2692,8 +2734,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
         const diff = target - current;
         if (Math.abs(diff) > 0.0008) {
           current += diff * ease;
-          // Cinematic catch-up when scrolling quickly
-          if (Math.abs(diff) > 0.35) current += diff * 0.2;
+          // Gentle catch-up only on large jumps (keeps scrub calm)
+          if (Math.abs(diff) > 0.7) current += diff * 0.06;
           seekTo(current);
         }
       }
@@ -2728,6 +2770,27 @@ body.nav-open, body.quote-open { overflow: hidden; }
     kick();
     window.__heroScrubKick = kick;
   }
+
+  // ===== Showcase video: load only when near viewport (don't compete with hero) =====
+  (function lazyShowcaseVideo() {
+    const el = document.getElementById('showcaseVideo');
+    if (!el) return;
+    const src = el.getAttribute('data-src');
+    if (!src) return;
+    const load = () => {
+      if (el.dataset.loaded) return;
+      el.dataset.loaded = '1';
+      el.src = src;
+      el.load();
+      const play = () => { el.play().catch(() => {}); };
+      el.addEventListener('canplay', play, { once: true });
+      play();
+    };
+    if (!('IntersectionObserver' in window)) { load(); return; }
+    new IntersectionObserver((entries, obs) => {
+      if (entries.some((e) => e.isIntersecting)) { obs.disconnect(); load(); }
+    }, { rootMargin: '200px 0px' }).observe(el);
+  })();
 
   // ===== Fullscreen Menu =====
   const navToggle = document.getElementById('navToggle');
