@@ -921,6 +921,37 @@ textarea.form-control{min-height:120px;resize:vertical;}
 .ba-label--before { left: 20px; }
 .ba-label--after { right: 20px; }
 
+/* Irish reroof 3-stage process */
+.roof-stages{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px;
+}
+.roof-stage{
+  margin:0;border:0;padding:0;background:transparent;text-align:left;cursor:default;
+  font:inherit;color:inherit;
+}
+.roof-stage__media{
+  position:relative;border-radius:16px;overflow:hidden;aspect-ratio:16/10;
+  border:1px solid rgba(11,42,70,.1);background:#E9F1F9;
+}
+.roof-stage__media picture{display:contents;}
+.roof-stage__media img{width:100%;height:100%;object-fit:cover;display:block;}
+.roof-stage__num{
+  position:absolute;left:12px;top:12px;width:28px;height:28px;border-radius:50%;
+  display:grid;place-items:center;font-size:.78rem;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,var(--gold-2),var(--gold-deep));
+  box-shadow:0 6px 14px rgba(28,122,60,.35);
+}
+.roof-stage__body{padding:12px 4px 0;}
+.roof-stage__body strong{
+  display:block;font-family:var(--font-display);font-size:.98rem;color:var(--ink);
+  letter-spacing:-.01em;margin-bottom:4px;
+}
+.roof-stage__body span{display:block;font-size:.88rem;line-height:1.45;color:#5B6B7C;}
+@media (max-width:768px){
+  .roof-stages{grid-template-columns:1fr;gap:14px;}
+  .roof-stage__media{aspect-ratio:16/9;}
+}
+
 /* 5. Framer Style Interactive Price Estimator */
 .calc-card {
   background: var(--espresso); border: 1px solid var(--line); border-radius: var(--r-xl);
@@ -2103,33 +2134,33 @@ body.nav-open, body.quote-open { overflow: hidden; }
   <video class="showcase-video__el" id="showcaseVideo" muted loop playsinline webkit-playsinline disableRemotePlayback preload="none" poster="images/roofing-hero-poster.jpg" data-src-mobile="images/roofing-hero-scrub-mobile.mp4" data-src="images/roofing-hero-scrub.mp4"></video>
 </section>
 
-<!-- WEBFLOW INTERACTIVE BEFORE / AFTER SLIDER -->
+<!-- IRISH REROOF BEFORE / AFTER + 3-STAGE PROCESS -->
 <section class="section" style="background:var(--cream); color:var(--ink);">
   <div class="wrap">
     <div class="center reveal">
       <div class="kicker center">Before &amp; After</div>
-      <h2 class="display-2" style="color:var(--ink); margin-top:12px;">See The Roofing <em>Difference</em></h2>
-      <p style="color:#4B5563; max-width:580px; margin:12px auto 0;">Drag the slider to compare a moss-covered, worn roof before vs after our cleaning and restoration work.</p>
+      <h2 class="display-2" style="color:var(--ink); margin-top:12px;">From Stripped Roof to <em>New Slates</em></h2>
+      <p style="color:#4B5563; max-width:600px; margin:12px auto 0;">Drag the slider to compare a stripped Irish roof with the finished new slate job — the same house, same angle, real reroof stages.</p>
     </div>
 
     <div class="before-after-container reveal d1" id="baSlider">
-      <span class="ba-label ba-label--before">Before</span>
-      <span class="ba-label ba-label--after">After</span>
-      <!-- Base (right) = clean after; clipped left layer = mossy before -->
+      <span class="ba-label ba-label--before">Stripped</span>
+      <span class="ba-label ba-label--after">New Roof</span>
+      <!-- Base (right) = finished new roof; clipped left layer = stripped -->
       <div class="ba-layer ba-before">
         <picture>
           <source media="(max-width: 768px)" type="image/webp" srcset="images/img-after-sm.webp">
-            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-after-sm.jpg">
-            <source type="image/webp" srcset="images/img-after.webp">
-          <img loading="lazy" decoding="async" src="images/img-after.jpg" alt="Roof after cleaning and restoration" width="1400" height="933">
+          <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-after-sm.jpg">
+          <source type="image/webp" srcset="images/img-after.webp">
+          <img loading="lazy" decoding="async" src="images/img-after.jpg" alt="Finished Irish roof with new dark grey slates" width="1400" height="933">
         </picture>
       </div>
       <div class="ba-layer ba-after" id="baAfterLayer">
         <picture>
           <source media="(max-width: 768px)" type="image/webp" srcset="images/img-before-sm.webp">
-            <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-before-sm.jpg">
-            <source type="image/webp" srcset="images/img-before.webp">
-          <img loading="lazy" decoding="async" src="images/img-before.jpg" alt="Roof before cleaning — moss and weathering" width="1400" height="933">
+          <source media="(max-width: 768px)" type="image/jpeg" srcset="images/img-before-sm.jpg">
+          <source type="image/webp" srcset="images/img-before.webp">
+          <img loading="lazy" decoding="async" src="images/img-before.jpg" alt="Irish roof stripped back to timber structure" width="1400" height="933">
         </picture>
       </div>
       <div class="ba-handle" id="baHandle">
@@ -2137,6 +2168,51 @@ body.nav-open, body.quote-open { overflow: hidden; }
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8L22 12L18 16M6 8L2 12L6 16"/></svg>
         </div>
       </div>
+    </div>
+
+    <div class="roof-stages reveal d2" aria-label="Irish reroof stages">
+      <article class="roof-stage">
+        <div class="roof-stage__media">
+          <span class="roof-stage__num" aria-hidden="true">1</span>
+          <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-before-sm.webp">
+            <source type="image/webp" srcset="images/img-before.webp">
+            <img loading="lazy" decoding="async" src="images/img-before.jpg" alt="Stage 1 — roof stripped" width="1400" height="933">
+          </picture>
+        </div>
+        <div class="roof-stage__body">
+          <strong>Roof stripped</strong>
+          <span>Old covering removed — structure opened up and ready for the new build-up.</span>
+        </div>
+      </article>
+      <article class="roof-stage">
+        <div class="roof-stage__media">
+          <span class="roof-stage__num" aria-hidden="true">2</span>
+          <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-roof-mid-sm.webp">
+            <source type="image/webp" srcset="images/img-roof-mid.webp">
+            <img loading="lazy" decoding="async" src="images/img-roof-mid.jpg" alt="Stage 2 — new felt and timber battens" width="1400" height="933">
+          </picture>
+        </div>
+        <div class="roof-stage__body">
+          <strong>New felt &amp; battens</strong>
+          <span>Fresh membrane and timber battens fixed — the proper Irish roof substrate.</span>
+        </div>
+      </article>
+      <article class="roof-stage">
+        <div class="roof-stage__media">
+          <span class="roof-stage__num" aria-hidden="true">3</span>
+          <picture>
+            <source media="(max-width: 768px)" type="image/webp" srcset="images/img-after-sm.webp">
+            <source type="image/webp" srcset="images/img-after.webp">
+            <img loading="lazy" decoding="async" src="images/img-after.jpg" alt="Stage 3 — completed new slate roof" width="1400" height="933">
+          </picture>
+        </div>
+        <div class="roof-stage__body">
+          <strong>New roof finished</strong>
+          <span>New slates on, ridge tidy, weather-tight — ready for Irish weather.</span>
+        </div>
+      </article>
     </div>
   </div>
 </section>
