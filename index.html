@@ -380,7 +380,7 @@ body.nav-open .nav__locale{border-left-color:rgba(11,42,70,.12);}
 .nav-menu__tel .tag-ic{color:var(--gold-deep);}
 
 /* HERO SECTION WITH SCROLL-SCRUB — dvh keeps sticky + scroll distance in sync on mobile */
-.hero{position:relative;height:300vh;height:300dvh;}
+.hero{position:relative;height:360vh;height:360dvh;}
 .hero-sticky{position:sticky;top:0;height:100vh;height:100dvh;min-height:560px;overflow:hidden;background:#0a0a0a;}
 .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;transform:translate3d(0,0,0) scale(1.03);transform-origin:center;will-change:transform;backface-visibility:hidden;-webkit-backface-visibility:hidden;contain:strict;}
 .hero-overlay{position:absolute;inset:0;pointer-events:none;z-index:1;
@@ -1053,7 +1053,7 @@ body.loaded .hero-content .hero-cta-row { opacity: 1; transform: none; }
 
 /* ---- TABLET: max-width 1024px ---- */
 @media (max-width: 1024px) {
-  .hero { height: 280vh; height: 280dvh; }
+  .hero { height: 340vh; height: 340dvh; }
   .hero-sticky { height: 100vh; height: 100dvh; min-height: 520px; }
   .hero-heading { font-size: clamp(2.15rem, 5.4vw, 3.1rem) !important; }
   .hero-headings { padding: 0; }
@@ -1067,7 +1067,7 @@ body.loaded .hero-content .hero-cta-row { opacity: 1; transform: none; }
 @media (max-width: 768px) {
   :root { --sec: clamp(48px, 6vw, 72px); --pad: clamp(18px, 5vw, 32px); }
   
-  .hero { height: 260vh; height: 260dvh; }
+  .hero { height: 320vh; height: 320dvh; }
   .hero-sticky { height: 100vh; height: 100dvh; min-height: 480px; }
   .hero-heading {
     white-space: normal !important; font-size: clamp(1.85rem, 7.4vw, 2.7rem) !important;
@@ -1158,7 +1158,7 @@ body.loaded .hero-content .hero-cta-row { opacity: 1; transform: none; }
 
 /* ---- SMALL MOBILE: max-width 480px ---- */
 @media (max-width: 480px) {
-  .hero { height: 250vh; height: 250dvh; }
+  .hero { height: 300vh; height: 300dvh; }
   .hero-heading { font-size: clamp(1.65rem, 7vw, 2.1rem) !important; }
   .hero-badge { font-size: .84rem; gap: 8px; align-items: flex-start; }
   .hero-badge__mark { width: 30px; height: 30px; border-radius: 9px; }
@@ -2745,7 +2745,7 @@ body.nav-open, body.quote-open { overflow: hidden; }
     let seekPending = false, queuedTime = null, stallTimer = null;
     let scrollable = 1, duration = 0;
     // Time-based lag (seconds) — identical feel at 60Hz / 120Hz / mobile
-    const scrubLag = isTouch ? 0.28 : 0.38;
+    const scrubLag = isTouch ? 0.36 : 0.48;
     const frameStep = 1 / (window.__heroMedia?.fps || (isTouch ? 20 : 30));
 
     video.preload = 'auto';
