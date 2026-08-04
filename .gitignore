@@ -5,3 +5,9 @@ check_js.js
 .DS_Store
 all-skills/
 .vercel
+node_modules/
+
+# Unused source / scratch media (keep deploy payload lean)
+images/Untitled video*
+images/e2956297-*.jpeg
+images/watermarked_*.jpg

@@ -2,5 +2,8 @@
   "name": "quality-roofing-solutions",
   "version": "1.0.0",
   "private": true,
-  "description": "Quality Roofing Solutions — Trusted Local Roofers in County Leitrim (static website)"
+  "description": "Quality Roofing Solutions — Trusted Local Roofers in County Leitrim (static website)",
+  "scripts": {
+    "start": "npx --yes serve . -l 3000"
+  }
 }
