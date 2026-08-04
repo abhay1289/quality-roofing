@@ -377,8 +377,8 @@ body.nav-open .nav__locale{border-left-color:rgba(11,42,70,.12);}
 }
 .nav-menu__tel .tag-ic{color:var(--gold-deep);}
 
-/* HERO SECTION WITH SCROLL-SCRUB */
-.hero{position:relative;height:300vh;}
+/* HERO SECTION WITH SCROLL-SCRUB — dvh keeps sticky + scroll distance in sync on mobile */
+.hero{position:relative;height:300vh;height:300dvh;}
 .hero-sticky{position:sticky;top:0;height:100vh;height:100dvh;min-height:560px;overflow:hidden;background:#0a0a0a;}
 .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;transform:translate3d(0,0,0) scale(1.03);transform-origin:center;will-change:transform;backface-visibility:hidden;-webkit-backface-visibility:hidden;contain:strict;}
 .hero-overlay{position:absolute;inset:0;pointer-events:none;z-index:1;
@@ -1034,7 +1034,7 @@ body.loaded .hero-content .hero-cta-row { opacity: 1; transform: none; }
 
 /* ---- TABLET: max-width 1024px ---- */
 @media (max-width: 1024px) {
-  .hero { height: 280vh; }
+  .hero { height: 280vh; height: 280dvh; }
   .hero-sticky { height: 100vh; height: 100dvh; min-height: 520px; }
   .hero-heading { font-size: clamp(2.15rem, 5.4vw, 3.1rem) !important; }
   .hero-headings { padding: 0; }
@@ -1048,7 +1048,7 @@ body.loaded .hero-content .hero-cta-row { opacity: 1; transform: none; }
 @media (max-width: 768px) {
   :root { --sec: clamp(48px, 6vw, 72px); --pad: clamp(18px, 5vw, 32px); }
   
-  .hero { height: 260vh; }
+  .hero { height: 260vh; height: 260dvh; }
   .hero-sticky { height: 100vh; height: 100dvh; min-height: 480px; }
   .hero-heading {
     white-space: normal !important; font-size: clamp(1.85rem, 7.4vw, 2.7rem) !important;
@@ -1139,7 +1139,7 @@ body.loaded .hero-content .hero-cta-row { opacity: 1; transform: none; }
 
 /* ---- SMALL MOBILE: max-width 480px ---- */
 @media (max-width: 480px) {
-  .hero { height: 250vh; }
+  .hero { height: 250vh; height: 250dvh; }
   .hero-heading { font-size: clamp(1.65rem, 7vw, 2.1rem) !important; }
   .hero-badge { font-size: .84rem; gap: 8px; align-items: flex-start; }
   .hero-badge__mark { width: 30px; height: 30px; border-radius: 9px; }
@@ -2653,30 +2653,42 @@ body.nav-open, body.quote-open { overflow: hidden; }
 
   function finish(){ if(pre) pre.classList.add('hide'); setupScrub(); setTimeout(function(){ document.body.classList.add('loaded'); }, 200); }
 
-  // ===== Cinematic hero scroll-scrub (device-proof) =====
+  // ===== Cinematic hero scroll-scrub — frame-rate + device sync =====
   function setupScrub(){
     if (!video) return;
     const heads = document.querySelectorAll('.hero-heading');
     const hero  = document.getElementById('hero');
+    const sticky = hero ? hero.querySelector('.hero-sticky') : null;
     if (!hero) return;
 
-    let current = 0, target = 0, seekPending = false, rafId = null, lastIdx = -1;
-    let heroVisible = true, videoReady = false, stallTimer = null, unlocked = false;
-    // Softer ease + taller hero scroll = slower cinematic scrub
-    const ease = isTouch ? 0.16 : 0.09;
-    const minDelta = isTouch ? 0.04 : 0.028;
+    let current = 0, target = 0, rafId = null, lastIdx = -1, lastTs = 0;
+    let heroVisible = true, videoReady = false, unlocked = false;
+    let seekPending = false, queuedTime = null, stallTimer = null;
+    let scrollable = 1, duration = 0;
+    // Time-based lag (seconds) — identical feel at 60Hz / 120Hz / mobile
+    const scrubLag = isTouch ? 0.28 : 0.38;
+    const frameStep = 1 / 30; // matches encode fps
 
     video.preload = 'auto';
     video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
     video.muted = true;
+    video.playsInline = true;
     try { video.disableRemotePlayback = true; } catch (_) {}
+    try { video.pause(); } catch (_) {}
 
     function unlock() {
       if (unlocked) return;
       const playPromise = video.play();
       const settle = () => {
-        try { video.pause(); if (video.readyState >= 1) video.currentTime = Math.min(current, (video.duration || 0) - 0.05 || 0); } catch (_) {}
+        try {
+          video.pause();
+          if (video.readyState >= 1) {
+            video.currentTime = Math.min(current, Math.max(0, (video.duration || 0) - frameStep));
+          }
+        } catch (_) {}
         unlocked = true;
+        kick();
       };
       if (playPromise && typeof playPromise.then === 'function') playPromise.then(settle).catch(settle);
       else settle();
@@ -2686,12 +2698,23 @@ body.nav-open, body.quote-open { overflow: hidden; }
       window.addEventListener(evt, unlock, { once: true, passive: true });
     });
 
+    function measure() {
+      const heroH = hero.offsetHeight || 0;
+      // Prefer sticky viewport height so scrub ends when sticky unpins (dvh-safe)
+      const viewH = (sticky && sticky.offsetHeight) || window.innerHeight || document.documentElement.clientHeight || 1;
+      scrollable = Math.max(1, heroH - viewH);
+    }
+
     function markReady() {
-      videoReady = video.readyState >= 2 && isFinite(video.duration) && video.duration > 0;
-      if (videoReady) kick();
+      duration = video.duration || 0;
+      videoReady = video.readyState >= 2 && isFinite(duration) && duration > 0;
+      if (videoReady) {
+        measure();
+        kick();
+      }
     }
     ['loadedmetadata', 'loadeddata', 'canplay', 'canplaythrough'].forEach((evt) => {
-      video.addEventListener(evt, markReady, { once: true });
+      video.addEventListener(evt, markReady);
     });
     markReady();
 
@@ -2699,74 +2722,131 @@ body.nav-open, body.quote-open { overflow: hidden; }
       new IntersectionObserver((entries) => {
         heroVisible = !!entries[0]?.isIntersecting;
         if (heroVisible) kick();
-      }, { threshold: 0, rootMargin: '10% 0px' }).observe(hero);
+      }, { threshold: 0, rootMargin: '15% 0px' }).observe(hero);
     }
 
+    // Visual progress from sticky pin geometry — works with Lenis + native touch scroll
     function progress() {
-      const h = hero.offsetHeight;
-      const vh = window.innerHeight || 1;
-      const scrollable = h - vh;
-      if (scrollable <= 1) return 0;
+      if (scrollable <= 1) measure();
       const top = hero.getBoundingClientRect().top;
-      return Math.min(1, Math.max(0, -top / scrollable));
+      const p = -top / scrollable;
+      return p <= 0 ? 0 : p >= 1 ? 1 : p;
+    }
+
+    function flushSeek() {
+      if (!videoReady || seekPending || queuedTime == null) return;
+      const end = Math.max(0, duration - 0.001);
+      const next = queuedTime <= 0 ? 0 : queuedTime >= end ? end : queuedTime;
+      queuedTime = null;
+      const shown = video.currentTime || 0;
+      if (Math.abs(shown - next) < frameStep * 0.45) return;
+      seekPending = true;
+      try {
+        if (!video.paused) video.pause();
+        video.currentTime = next;
+      } catch (_) {
+        seekPending = false;
+        return;
+      }
+      clearTimeout(stallTimer);
+      // iOS sometimes skips 'seeked' — release + retry latest target
+      stallTimer = setTimeout(() => {
+        seekPending = false;
+        if (queuedTime != null) flushSeek();
+      }, isTouch ? 90 : 140);
     }
 
     function seekTo(time) {
-      if (seekPending || !videoReady) return;
-      if (!isFinite(time)) return;
-      const end = Math.max(0, (video.duration || 0) - 0.04);
-      const next = Math.min(end, Math.max(0, time));
-      if (Math.abs((video.currentTime || 0) - next) < minDelta) return;
-      seekPending = true;
-      try { video.currentTime = next; }
-      catch (_) { seekPending = false; return; }
-      clearTimeout(stallTimer);
-      stallTimer = setTimeout(() => { seekPending = false; }, isTouch ? 220 : 280);
+      if (!videoReady || !isFinite(time)) return;
+      queuedTime = time;
+      flushSeek();
     }
-    video.addEventListener('seeked', () => { seekPending = false; clearTimeout(stallTimer); });
-    video.addEventListener('error', () => { seekPending = false; clearTimeout(stallTimer); videoReady = false; });
 
-    function render() {
+    video.addEventListener('seeked', () => {
+      seekPending = false;
+      clearTimeout(stallTimer);
+      if (queuedTime != null) flushSeek();
+    });
+    video.addEventListener('error', () => {
+      seekPending = false;
+      clearTimeout(stallTimer);
+      videoReady = false;
+    });
+
+    function syncHeadings(p) {
+      if (!heads.length) return;
+      const idx = Math.min(heads.length - 1, Math.floor(p * heads.length));
+      if (idx === lastIdx) return;
+      heads.forEach((h, i) => h.classList.toggle('is-active', i === idx));
+      lastIdx = idx;
+    }
+
+    function render(ts) {
       rafId = null;
+      if (!lastTs) lastTs = ts;
+      const dt = Math.min(0.05, Math.max(0.001, (ts - lastTs) / 1000));
+      lastTs = ts;
+
       const p = prefersReducedMotion ? 0 : progress();
-      if (videoReady) {
-        target = p * video.duration;
-        const diff = target - current;
-        if (Math.abs(diff) > 0.0008) {
-          current += diff * ease;
-          // Gentle catch-up only on large jumps (keeps scrub calm)
-          if (Math.abs(diff) > 0.7) current += diff * 0.06;
-          seekTo(current);
-        }
+      syncHeadings(p);
+
+      if (videoReady && duration > 0) {
+        target = p * duration;
+        // Exponential smoothing — same lag curve on every refresh rate
+        const alpha = 1 - Math.exp(-dt / scrubLag);
+        current += (target - current) * alpha;
+        if (Math.abs(target - current) < 0.0008) current = target;
+        seekTo(current);
       }
-      if (heads.length) {
-        const idx = Math.min(heads.length - 1, Math.floor(p * heads.length));
-        if (idx !== lastIdx) {
-          heads.forEach((h, i) => h.classList.toggle('is-active', i === idx));
-          lastIdx = idx;
-        }
+
+      if (heroVisible || Math.abs(target - current) > 0.0008 || queuedTime != null) {
+        rafId = requestAnimationFrame(render);
+      } else {
+        lastTs = 0;
       }
-      if (heroVisible || Math.abs(target - current) > 0.0015) rafId = requestAnimationFrame(render);
     }
 
     function kick() {
       if (!rafId) rafId = requestAnimationFrame(render);
     }
 
+    let measureTimer = null;
+    function onLayout() {
+      clearTimeout(measureTimer);
+      measureTimer = setTimeout(() => { measure(); kick(); }, 60);
+    }
+
     if (lenis) lenis.on('scroll', kick);
-    ['scroll', 'touchmove', 'resize', 'orientationchange'].forEach((evt) => {
+    ['scroll', 'touchmove', 'wheel'].forEach((evt) => {
       window.addEventListener(evt, kick, { passive: true });
     });
+    ['resize', 'orientationchange'].forEach((evt) => {
+      window.addEventListener(evt, onLayout, { passive: true });
+    });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', onLayout, { passive: true });
+    }
     document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) { seekPending = false; clearTimeout(stallTimer); markReady(); unlock(); kick(); }
+      if (!document.hidden) {
+        seekPending = false;
+        clearTimeout(stallTimer);
+        markReady();
+        unlock();
+        measure();
+        kick();
+      }
     });
     window.addEventListener('pageshow', (e) => {
-      if (e.persisted) { seekPending = false; markReady(); unlock(); kick(); }
+      if (e.persisted) {
+        seekPending = false;
+        markReady();
+        unlock();
+        measure();
+        kick();
+      }
     });
-    setInterval(() => {
-      if (heroVisible && !rafId && !document.hidden) { seekPending = false; kick(); }
-    }, 2500);
 
+    measure();
     kick();
     window.__heroScrubKick = kick;
   }
