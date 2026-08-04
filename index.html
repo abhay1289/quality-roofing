@@ -80,8 +80,23 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="image" href="images/roofing-hero-poster-mobile.webp" type="image/webp" media="(max-width: 900px)" fetchpriority="high">
 <link rel="preload" as="image" href="images/roofing-hero-poster.jpg" media="(min-width: 901px)" fetchpriority="high">
+<link rel="preload" as="video" href="images/roofing-hero-scrub-mobile.mp4" type="video/mp4" media="(max-width: 900px)">
 <link rel="preload" as="image" href="images/img-about-sm.webp" type="image/webp" media="(max-width: 768px)">
 <link rel="preload" as="image" href="images/img-about.webp" type="image/webp" media="(min-width: 769px)">
+<script>
+/* Boot hero media ASAP so mobile scrub is buffered before first scroll */
+(function () {
+  var narrow = window.matchMedia('(max-width: 900px)').matches;
+  var coarse = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+  var mobile = narrow || coarse;
+  window.__heroBoot = {
+    mobile: mobile,
+    src: mobile ? 'images/roofing-hero-scrub-mobile.mp4' : 'images/roofing-hero-scrub.mp4',
+    poster: mobile ? 'images/roofing-hero-poster-mobile.jpg' : 'images/roofing-hero-poster.jpg',
+    fps: mobile ? 18 : 30
+  };
+})();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css">
 <style>
@@ -452,8 +467,14 @@ body.nav-open .nav__locale{border-left-color:rgba(11,42,70,.12);}
 
 /* HERO SECTION WITH SCROLL-SCRUB — dvh keeps sticky + scroll distance in sync on mobile */
 .hero{position:relative;height:360vh;height:360dvh;}
-.hero-sticky{position:sticky;top:0;height:100vh;height:100dvh;min-height:560px;overflow:hidden;background:#0a0a0a;}
-.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;transform:translate3d(0,0,0) scale(1.03);transform-origin:center;will-change:transform;backface-visibility:hidden;-webkit-backface-visibility:hidden;contain:strict;}
+.hero-sticky{position:sticky;top:0;height:100vh;height:100dvh;min-height:560px;overflow:hidden;background:#0a0a0a;
+  background-image:url('images/roofing-hero-poster-mobile.jpg');background-size:cover;background-position:center;}
+@media (min-width:901px){
+  .hero-sticky{background-image:url('images/roofing-hero-poster.jpg');}
+}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;transform:translate3d(0,0,0) scale(1.03);transform-origin:center;will-change:transform;backface-visibility:hidden;-webkit-backface-visibility:hidden;contain:strict;
+  opacity:0;transition:opacity .28s ease;}
+.hero-video.is-ready{opacity:1;}
 .hero-overlay{position:absolute;inset:0;pointer-events:none;z-index:1;
   background:
     linear-gradient(90deg, rgba(0,0,0,0.46) 0%, rgba(0,0,0,0.24) 34%, rgba(0,0,0,0.08) 62%, transparent 86%),
@@ -1771,8 +1792,9 @@ body.nav-open, body.quote-open { overflow: hidden; }
 <!-- HERO SECTION WITH VIDEO SCROLL-SCRUB -->
 <section class="hero" id="hero" style="touch-action: pan-y;">
   <div class="hero-sticky">
-    <video class="hero-video" id="heroVideo" muted playsinline webkit-playsinline disableRemotePlayback x5-video-player-type="h5" preload="metadata" poster="images/roofing-hero-poster-mobile.jpg" fetchpriority="high">
-      <!-- src chosen in JS for device/network -->
+    <video class="hero-video" id="heroVideo" muted playsinline webkit-playsinline disableRemotePlayback x5-video-player-type="h5" preload="auto" poster="images/roofing-hero-poster-mobile.jpg" fetchpriority="high">
+      <source src="images/roofing-hero-scrub-mobile.mp4" type="video/mp4" media="(max-width: 900px)">
+      <source src="images/roofing-hero-scrub.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -2743,67 +2765,106 @@ body.nav-open, body.quote-open { overflow: hidden; }
     if (e.key === 'Escape' && quoteModal?.classList.contains('is-open')) closeQuoteModal();
   });
 
-  // ===== Preloader + Hero Video Setup (mobile-first, non-blocking) =====
+  // ===== Preloader + Hero Video Setup (mobile waits until scrub-buffered) =====
   const video = document.getElementById('heroVideo');
   const pre = document.getElementById('preloader');
   const pctEl = document.getElementById('pct');
   const barEl = document.getElementById('bar');
+  const boot = window.__heroBoot || {};
   const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   const slowNet = !!(conn && (conn.saveData || /2g/.test(String(conn.effectiveType || ''))));
-  const useMobileHero = isTouch || slowNet || (window.innerWidth || 0) <= 900;
-  const heroPoster = useMobileHero ? 'images/roofing-hero-poster-mobile.jpg' : 'images/roofing-hero-poster.jpg';
-  const heroSrc = useMobileHero ? 'images/roofing-hero-scrub-mobile.mp4' : 'images/roofing-hero-scrub.mp4';
-  const heroFps = useMobileHero ? 20 : 30;
+  const useMobileHero = !!(boot.mobile || isTouch || slowNet || (window.innerWidth || 0) <= 900);
+  const heroPoster = boot.poster || (useMobileHero ? 'images/roofing-hero-poster-mobile.jpg' : 'images/roofing-hero-poster.jpg');
+  const heroSrc = boot.src || (useMobileHero ? 'images/roofing-hero-scrub-mobile.mp4' : 'images/roofing-hero-scrub.mp4');
+  const heroFps = boot.fps || (useMobileHero ? 18 : 30);
   window.__heroMedia = { src: heroSrc, poster: heroPoster, fps: heroFps, mobile: useMobileHero };
 
-  let ready = false;
+  let uiReady = false;
+  let scrubReady = false;
   let finished = false;
+
+  function bufferedAhead() {
+    if (!video) return 0;
+    try {
+      if (!video.buffered || !video.buffered.length) return 0;
+      return video.buffered.end(video.buffered.length - 1);
+    } catch (_) { return 0; }
+  }
+
+  function checkScrubReady() {
+    if (!video) return true;
+    if (video.error) return true;
+    const dur = video.duration || 0;
+    // Mobile needs enough bytes in buffer before seeking or iOS glitches/black-frames
+    if (useMobileHero) {
+      if (video.readyState >= 4) return true; // HAVE_ENOUGH_DATA
+      if (dur > 0 && bufferedAhead() >= Math.min(dur * 0.85, Math.max(3, dur - 0.2))) return true;
+      return false;
+    }
+    return video.readyState >= 3 || (dur > 0 && bufferedAhead() >= 1.5);
+  }
 
   if (video) {
     video.poster = heroPoster;
     video.preload = 'auto';
     video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
     video.muted = true;
-    // Assign compact source before load so phones never pull the desktop 6MB file
+    video.playsInline = true;
+    try { video.disableRemotePlayback = true; } catch (_) {}
+
+    // Force the correct compact source (media= on <source> is flaky on some WebKits)
     while (video.firstChild) video.removeChild(video.firstChild);
     video.removeAttribute('src');
     video.src = heroSrc;
     try { video.load(); } catch (_) {}
 
-    // Don't wait for canplaythrough — first frame / metadata is enough to enter
-    video.addEventListener('loadeddata', () => { ready = true; }, { once: true });
-    video.addEventListener('canplay', () => { ready = true; }, { once: true });
-    video.addEventListener('error', () => { ready = true; }, { once: true });
+    const onProgress = () => {
+      if (checkScrubReady()) scrubReady = true;
+      if (video.readyState >= 2) uiReady = true;
+    };
+    ['loadeddata', 'canplay', 'canplaythrough', 'progress', 'loadedmetadata'].forEach((evt) => {
+      video.addEventListener(evt, onProgress);
+    });
+    video.addEventListener('error', () => { uiReady = true; scrubReady = true; }, { once: true });
+  } else {
+    uiReady = true;
+    scrubReady = true;
   }
 
-  // Mobile: dismiss almost immediately (poster is already painted). Desktop: slightly longer.
-  setTimeout(() => { ready = true; }, useMobileHero ? 480 : 1200);
+  // Hard caps so a slow network never traps the user
+  setTimeout(() => { uiReady = true; }, useMobileHero ? 700 : 1100);
+  setTimeout(() => { scrubReady = true; }, useMobileHero ? 2800 : 2200);
 
   let p = 0;
   const timer = setInterval(() => {
-    if (video && (video.readyState >= 2 || video.error)) ready = true;
-    const target = ready ? 100 : Math.min(useMobileHero ? 92 : 88, p + (useMobileHero ? 14 : 8));
-    p += (target - p) * (useMobileHero ? 0.45 : 0.3);
+    if (video && video.readyState >= 2) uiReady = true;
+    if (checkScrubReady()) scrubReady = true;
+
+    // Mobile: hold near 90% until scrub buffer is ready, then finish
+    const gateOpen = useMobileHero ? (uiReady && scrubReady) : uiReady;
+    const target = gateOpen ? 100 : Math.min(useMobileHero ? 90 : 88, p + (useMobileHero ? 10 : 8));
+    p += (target - p) * (useMobileHero ? 0.4 : 0.3);
     const shown = Math.round(p);
     if (pctEl) pctEl.textContent = shown + '%';
     if (barEl) barEl.style.width = shown + '%';
-    if (p >= 99.2) {
+    if (p >= 99.2 && gateOpen) {
       clearInterval(timer);
       if (pctEl) pctEl.textContent = '100%';
       if (barEl) barEl.style.width = '100%';
       finish();
     }
-  }, useMobileHero ? 32 : 50);
+  }, useMobileHero ? 40 : 50);
 
   function finish(){
     if (finished) return;
     finished = true;
     if (pre) pre.classList.add('hide');
     setupScrub();
-    setTimeout(function(){ document.body.classList.add('loaded'); }, useMobileHero ? 80 : 200);
+    setTimeout(function(){ document.body.classList.add('loaded'); }, useMobileHero ? 60 : 180);
   }
 
-  // ===== Cinematic hero scroll-scrub — frame-rate + device sync =====
+  // ===== Cinematic hero scroll-scrub — mobile-safe seeking =====
   function setupScrub(){
     if (!video) return;
     const heads = document.querySelectorAll('.hero-heading');
@@ -2812,12 +2873,13 @@ body.nav-open, body.quote-open { overflow: hidden; }
     if (!hero) return;
 
     let current = 0, target = 0, rafId = null, lastIdx = -1, lastTs = 0;
-    let heroVisible = true, videoReady = false, unlocked = false;
-    let seekPending = false, queuedTime = null, stallTimer = null;
+    let heroVisible = true, videoReady = false, unlocked = false, scrubArmed = false;
+    let seekPending = false, queuedTime = null, stallTimer = null, lastDrawn = -1;
     let scrollable = 1, duration = 0;
-    // Time-based lag (seconds) — identical feel at 60Hz / 120Hz / mobile
-    const scrubLag = isTouch ? 0.36 : 0.48;
-    const frameStep = 1 / (window.__heroMedia?.fps || (isTouch ? 20 : 30));
+    const fps = window.__heroMedia?.fps || (useMobileHero ? 18 : 30);
+    const frameStep = 1 / fps;
+    // Tight lag once buffered — high lag was causing mobile "catch-up glitch"
+    const scrubLag = useMobileHero ? 0.14 : 0.42;
 
     video.preload = 'auto';
     video.setAttribute('playsinline', '');
@@ -2827,55 +2889,86 @@ body.nav-open, body.quote-open { overflow: hidden; }
     try { video.disableRemotePlayback = true; } catch (_) {}
     try { video.pause(); } catch (_) {}
 
+    function revealVideo() {
+      video.classList.add('is-ready');
+    }
+
     function unlock() {
       if (unlocked) return;
       const playPromise = video.play();
       const settle = () => {
         try {
           video.pause();
-          if (video.readyState >= 1) {
-            video.currentTime = Math.min(current, Math.max(0, (video.duration || 0) - frameStep));
-          }
+          if (video.readyState >= 1) video.currentTime = 0;
         } catch (_) {}
         unlocked = true;
+        revealVideo();
         kick();
       };
       if (playPromise && typeof playPromise.then === 'function') playPromise.then(settle).catch(settle);
       else settle();
     }
     unlock();
-    ['pointerdown', 'touchstart', 'click', 'keydown'].forEach((evt) => {
+    ['pointerdown', 'touchstart', 'touchend', 'click', 'keydown'].forEach((evt) => {
       window.addEventListener(evt, unlock, { once: true, passive: true });
     });
 
     function measure() {
       const heroH = hero.offsetHeight || 0;
-      // Prefer sticky viewport height so scrub ends when sticky unpins (dvh-safe)
       const viewH = (sticky && sticky.offsetHeight) || window.innerHeight || document.documentElement.clientHeight || 1;
       scrollable = Math.max(1, heroH - viewH);
     }
 
-    function markReady() {
-      duration = video.duration || 0;
-      videoReady = video.readyState >= 2 && isFinite(duration) && duration > 0;
-      if (videoReady) {
-        measure();
-        kick();
-      }
+    function isBuffered(t) {
+      if (video.readyState >= 4) return true;
+      try {
+        const b = video.buffered;
+        for (let i = 0; i < b.length; i++) {
+          if (t >= b.start(i) - 0.02 && t <= b.end(i) + 0.08) return true;
+        }
+      } catch (_) {}
+      return false;
     }
-    ['loadedmetadata', 'loadeddata', 'canplay', 'canplaythrough'].forEach((evt) => {
-      video.addEventListener(evt, markReady);
+
+    function quantize(t) {
+      return Math.round(t / frameStep) * frameStep;
+    }
+
+    function armScrub() {
+      duration = video.duration || 0;
+      videoReady = isFinite(duration) && duration > 0 && video.readyState >= 2;
+      if (!videoReady) return;
+      if (!scrubArmed && (checkScrubReady() || !useMobileHero)) {
+        scrubArmed = true;
+        revealVideo();
+        // Warm decoder so first user scroll doesn't hitch
+        if (useMobileHero && duration > 1) {
+          const points = [0, duration * 0.35, duration * 0.7, 0];
+          let i = 0;
+          const warm = () => {
+            if (i >= points.length) { kick(); return; }
+            try { video.currentTime = points[i++]; } catch (_) { i++; }
+            setTimeout(warm, 40);
+          };
+          warm();
+        }
+      }
+      measure();
+      kick();
+    }
+
+    ['loadedmetadata', 'loadeddata', 'canplay', 'canplaythrough', 'progress'].forEach((evt) => {
+      video.addEventListener(evt, armScrub);
     });
-    markReady();
+    armScrub();
 
     if ('IntersectionObserver' in window) {
       new IntersectionObserver((entries) => {
         heroVisible = !!entries[0]?.isIntersecting;
         if (heroVisible) kick();
-      }, { threshold: 0, rootMargin: '15% 0px' }).observe(hero);
+      }, { threshold: 0, rootMargin: '20% 0px' }).observe(hero);
     }
 
-    // Visual progress from sticky pin geometry — works with Lenis + native touch scroll
     function progress() {
       if (scrollable <= 1) measure();
       const top = hero.getBoundingClientRect().top;
@@ -2884,30 +2977,43 @@ body.nav-open, body.quote-open { overflow: hidden; }
     }
 
     function flushSeek() {
-      if (!videoReady || seekPending || queuedTime == null) return;
-      const end = Math.max(0, duration - 0.001);
-      const next = queuedTime <= 0 ? 0 : queuedTime >= end ? end : queuedTime;
+      if (!videoReady || !scrubArmed || seekPending || queuedTime == null) return;
+      const end = Math.max(0, duration - frameStep * 0.5);
+      let next = quantize(queuedTime);
+      if (next < 0) next = 0;
+      if (next > end) next = end;
       queuedTime = null;
-      const shown = video.currentTime || 0;
-      if (Math.abs(shown - next) < frameStep * 0.45) return;
+
+      // Never seek into unbuffered ranges on mobile — keep last good frame (no black glitch)
+      if (useMobileHero && !isBuffered(next)) {
+        if (lastDrawn >= 0 && isBuffered(lastDrawn)) return;
+        // fall back to nearest buffered end
+        try {
+          const b = video.buffered;
+          if (b.length) next = Math.min(next, b.end(b.length - 1) - frameStep);
+          else return;
+        } catch (_) { return; }
+      }
+
+      if (Math.abs((video.currentTime || 0) - next) < frameStep * 0.35) return;
       seekPending = true;
       try {
         if (!video.paused) video.pause();
         video.currentTime = next;
+        lastDrawn = next;
       } catch (_) {
         seekPending = false;
         return;
       }
       clearTimeout(stallTimer);
-      // iOS sometimes skips 'seeked' — release + retry latest target
       stallTimer = setTimeout(() => {
         seekPending = false;
         if (queuedTime != null) flushSeek();
-      }, isTouch ? 90 : 140);
+      }, useMobileHero ? 70 : 130);
     }
 
     function seekTo(time) {
-      if (!videoReady || !isFinite(time)) return;
+      if (!videoReady || !scrubArmed || !isFinite(time)) return;
       queuedTime = time;
       flushSeek();
     }
@@ -2915,6 +3021,7 @@ body.nav-open, body.quote-open { overflow: hidden; }
     video.addEventListener('seeked', () => {
       seekPending = false;
       clearTimeout(stallTimer);
+      revealVideo();
       if (queuedTime != null) flushSeek();
     });
     video.addEventListener('error', () => {
@@ -2934,22 +3041,22 @@ body.nav-open, body.quote-open { overflow: hidden; }
     function render(ts) {
       rafId = null;
       if (!lastTs) lastTs = ts;
-      const dt = Math.min(0.05, Math.max(0.001, (ts - lastTs) / 1000));
+      const dt = Math.min(0.048, Math.max(0.001, (ts - lastTs) / 1000));
       lastTs = ts;
 
       const p = prefersReducedMotion ? 0 : progress();
       syncHeadings(p);
 
-      if (videoReady && duration > 0) {
+      if (videoReady && scrubArmed && duration > 0) {
         target = p * duration;
-        // Exponential smoothing — same lag curve on every refresh rate
         const alpha = 1 - Math.exp(-dt / scrubLag);
         current += (target - current) * alpha;
-        if (Math.abs(target - current) < 0.0008) current = target;
+        // Snap quickly when close so mobile doesn't "swim"
+        if (Math.abs(target - current) < frameStep * 0.6) current = target;
         seekTo(current);
       }
 
-      if (heroVisible || Math.abs(target - current) > 0.0008 || queuedTime != null) {
+      if (heroVisible || Math.abs(target - current) > frameStep * 0.25 || queuedTime != null) {
         rafId = requestAnimationFrame(render);
       } else {
         lastTs = 0;
@@ -2963,12 +3070,12 @@ body.nav-open, body.quote-open { overflow: hidden; }
     let measureTimer = null;
     function onLayout() {
       clearTimeout(measureTimer);
-      measureTimer = setTimeout(() => { measure(); kick(); }, 60);
+      measureTimer = setTimeout(() => { measure(); kick(); }, 50);
     }
 
     if (lenis) lenis.on('scroll', kick);
-    ['scroll', 'touchmove', 'wheel'].forEach((evt) => {
-      window.addEventListener(evt, kick, { passive: true });
+    ['scroll', 'touchmove', 'touchstart', 'wheel'].forEach((evt) => {
+      window.addEventListener(evt, () => { unlock(); kick(); }, { passive: true });
     });
     ['resize', 'orientationchange'].forEach((evt) => {
       window.addEventListener(evt, onLayout, { passive: true });
@@ -2980,8 +3087,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
       if (!document.hidden) {
         seekPending = false;
         clearTimeout(stallTimer);
-        markReady();
         unlock();
+        armScrub();
         measure();
         kick();
       }
@@ -2989,8 +3096,8 @@ body.nav-open, body.quote-open { overflow: hidden; }
     window.addEventListener('pageshow', (e) => {
       if (e.persisted) {
         seekPending = false;
-        markReady();
         unlock();
+        armScrub();
         measure();
         kick();
       }
